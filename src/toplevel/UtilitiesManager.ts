@@ -6,10 +6,10 @@ import { homedir } from 'os';
 export function getShadowEngineDataDir() {
 	let directory: string;
 	if (process.platform == 'win32') {
-		directory = homedir() + '/AppData/Roaming/Shadow Engine';
+		directory = homedir() + '/AppData/Roaming/Shadow';
 	} else {
 		//Everything else includes Linux, FreeBSD, OpenBSD, NetBSD, and Darwin, maybe more
-		directory = homedir() + '/Shadow Engine';
+		directory = homedir() + '/Shadow';
 	}
 	return directory;
 }
