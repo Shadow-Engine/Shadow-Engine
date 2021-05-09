@@ -1,4 +1,4 @@
-module.exports = [
+export let locales = [
 	{
 		id: 'es_MX',
 		data: {

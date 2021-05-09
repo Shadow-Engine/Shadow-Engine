@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import { initializeConfig } from './toplevel/ConfigurationManager';
+import { createWindow } from './toplevel/WindowManager';
 
 let mainWindow: BrowserWindow;
 
@@ -8,6 +9,8 @@ let mainWindow: BrowserWindow;
 */
 function initMain() {
 	initializeConfig();
+
+	createWindow();
 }
 
 app.on('ready', () => {
