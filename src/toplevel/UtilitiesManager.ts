@@ -1,6 +1,6 @@
 //General Utils such as math functions, uuid generation, basic popups, etc...
 
-import { readFileSync } from 'original-fs';
+import { readFileSync } from 'fs';
 import { homedir } from 'os';
 
 export function getShadowEngineDataDir() {

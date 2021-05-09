@@ -10,7 +10,7 @@ let mainWindow: BrowserWindow;
 function initMain() {
 	initializeConfig();
 
-	createWindow();
+	//createWindow();
 }
 
 app.on('ready', () => {

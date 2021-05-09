@@ -1,14 +1,16 @@
 // Used for managing configuration files such as the editor config, or project specific configs, reading and writing values from them
 
 import {
+	appendFileSync,
 	existsSync,
 	mkdirSync,
 	readFileSync,
 	writeFileSync
-} from 'original-fs';
+} from 'fs';
 import { expandPath } from './PathManager';
 import { getShadowEngineDataDir } from './UtilitiesManager';
-import { parse } from 'json5';
+import { parse, stringify } from 'json5';
+import { engineConfig } from '../res/engine-config';
 
 /* interface configInitalizationArrayInterface {
 	file: object {
@@ -33,7 +35,7 @@ let configInitalizationArray = [
 	{
 		type: 'file',
 		location: shadowDataDir + '/engine-data/config.json5',
-		data: '{}'
+		data: stringify(engineConfig, null, 4)
 	},
 	{
 		type: 'file',
@@ -75,30 +77,37 @@ export function modConfigFile(
 ) {
 	// Pass macroPath through the path expander (PathManager.ts)
 	let expandedFilePath: string = expandPath(macroPath);
-	let config: object = {
-		c: []
-	};
 
-	if (existsSync(expandedFilePath)) {
-		config = parse(readFileSync(expandedFilePath, 'utf-8'));
+	// If file doesn't exist, create it
+	if (!existsSync(expandedFilePath)) {
+		writeFileSync(expandedFilePath, '');
 	}
 
-	if (
-		setting.includes(':') ||
-		setting.includes(';') ||
-		value.includes(':') ||
-		value.includes(';')
-	) {
-		throw new Error(
-			'E: The characters ":" and ";" aren\'t allowed in config files'
-		);
+	let config: string = readFileSync(expandedFilePath, 'utf-8');
+	let configSplit = config.split('\n');
+	let settingMatch = null; // stores weather a pre-existing value is already in the config file
+	for (let i = 0; i < configSplit.length; i++) {
+		if (configSplit[i].split(':')[0] == setting) {
+			// Compare settings
+			settingMatch = i;
+			return; // save some loops
+		}
 	}
 
-	// ANCHOR something like this??
-	//config.c.push()
+	// settingMatch contains the line number of where the setting is stored
+	// so we can use that to split, splice and substr our way to overwrite
+	// the value inside the setting without having to move the line at all
 
-	writeFileSync(expandedFilePath, '');
-	//TODO: Finish this function
+	if (settingMatch !== null) {
+		// TODO: This part doesn't work
+		// If there is a pre-existing setting, settingMatch will have the number and not be equal to null
+		let splicedInSetting: string = `${setting}:${value}`; // Construct the insert string
+		configSplit.splice(settingMatch, 1, splicedInSetting); // Splice the string in the array
+		writeFileSync(expandedFilePath, configSplit.join('\n')); // Join and write the final file
+	} else {
+		// If settingMatch is null, append the new setting to the end of the file
+		appendFileSync(expandedFilePath, `\n${setting}:${value}`);
+	}
 }
 
 /*
@@ -114,4 +123,14 @@ export function readConfigFile(macroPath: string, setting: string) {
 	//NOTE Keep this function 100% synchronous otherwise you might have some problems
 
 	return 'stub string';
+}
+
+export function getEngineConfig() {
+	//Returns the whole engine configuration in an object
+	return parse(
+		readFileSync(
+			getShadowEngineDataDir() + '/engine-data/config.json5',
+			'utf-8'
+		)
+	);
 }
