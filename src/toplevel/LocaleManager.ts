@@ -1,7 +1,6 @@
 //Manager for getting locales, this is going to be called upon a lot so it's gotta be fast
 
-import { readConfigFile } from './ConfigurationManager';
-import { getShadowEngineDataDir } from './UtilitiesManager';
+import { getEngineConfig } from './ConfigurationManager';
 
 const defaultLocale: string = 'en_US';
 export function getDefaultLocale() {
@@ -13,10 +12,8 @@ export function initializeLocales() {
 
 	// Read the Shadow Engine config file
 	// to get the configured language.
-	let selectedLocale: string = readConfigFile(
-		`${getShadowEngineDataDir()}/engine-data/config.json`,
-		'locale'
-	);
+	let selectedLocale: string = getEngineConfig().language;
+
 	//TODO FINSIH THIS
 }
 

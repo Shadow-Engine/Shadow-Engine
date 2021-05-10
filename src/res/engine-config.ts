@@ -1,5 +1,7 @@
 export let engineConfig = {
+	language: 'en_US',
 	useNativeTitleBar: false,
+	useNativePopups: false,
 	codeEditor: {
 		editorBackend: 'monaco',
 		showLineNumbers: true,

@@ -1,6 +1,7 @@
 // Manager for sending IPC messages between windows and creating windows
 
 import { BrowserWindow } from 'electron';
+import { writeFileSync } from 'fs';
 import { getEngineConfig } from './ConfigurationManager';
 
 let useNativeTitlebar = getEngineConfig().useNativeTitleBar;
@@ -13,6 +14,7 @@ interface WindowOptions {
 	y?: number;
 	height: number;
 	width: number;
+	url: string;
 }
 type windowDecorations = 'basic' | 'undecorated' | 'tabbed' | 'tool';
 
@@ -24,10 +26,27 @@ export function createWindow(settings: WindowOptions) {
 		x: settings.x,
 		y: settings.y,
 		darkTheme: true,
-		frame: useNativeTitlebar // if useNativeTitlebar is true, then so is the frame
+		frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
+		webPreferences: { nodeIntegration: true }
 	});
 
-	window.loadURL(`file://${__dirname}/index.html`);
+	let frame = new BrowserWindow({
+		width: 800,
+		height: 450,
+		webPreferences: {
+			offscreen: true
+		}
+	});
+
+	frame.loadURL('https://github.com');
+	frame.webContents.on('paint', function (event, dirty, image) {
+		writeFileSync('C:\\Users\\Owner\\Documents\\frame.png', image.toPNG());
+	});
+	frame.webContents.setFrameRate(60);
+
+	window.webContents.openDevTools();
+
+	window.loadFile(settings.url);
 	window.show();
 	window.on('closed', function () {
 		window = null;

@@ -1,8 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { initializeConfig } from './toplevel/ConfigurationManager';
 import { createWindow } from './toplevel/WindowManager';
-
-let mainWindow: BrowserWindow;
 
 /*
 	Prepare Shadow Engine config files, windows and whatnot
@@ -10,7 +8,12 @@ let mainWindow: BrowserWindow;
 function initMain() {
 	initializeConfig();
 
-	//createWindow();
+	createWindow({
+		height: 450,
+		width: 800,
+		decorations: 'basic',
+		url: '../dom/frames/basic.html'
+	});
 }
 
 app.on('ready', () => {
@@ -26,3 +29,6 @@ app.on('window-all-closed', () => {
 		app.quit();
 	}
 });
+
+// Utilities Manager
+ipcMain.on('main.createPopup', () => {});

@@ -1,7 +1,9 @@
 //General Utils such as math functions, uuid generation, basic popups, etc...
 
 import { readFileSync } from 'fs';
+import { parse } from 'json5';
 import { homedir } from 'os';
+import { getEngineConfig } from './ConfigurationManager';
 
 export function getShadowEngineDataDir() {
 	let directory: string;
@@ -19,8 +21,16 @@ export function getShadowEngineDataDir() {
 */
 export function getOpenProject() {
 	// Synchronous to prevent future bugs :)
-	return readFileSync(
-		getShadowEngineDataDir() + '/engine-data/project.json',
-		'utf-8'
-	);
+	return parse(
+		readFileSync(
+			getShadowEngineDataDir() + '/engine-data/project.json5',
+			'utf-8'
+		)
+	).project;
+}
+
+export interface popupOptions {}
+
+export function createPopup(options: popupOptions) {
+	let useNativePopups: string = getEngineConfig().useNativePopups;
 }

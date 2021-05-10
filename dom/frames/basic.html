@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Shadow Engine</title>
+		<link rel="stylesheet" href="../../styles/frames/basic.css" />
+	</head>
+	<body>
+		<div class="topbar"></div>
+		<canvas height="450" width="800" id="c"></canvas>
+		<script>
+			var canvas = document.getElementById('c');
+			var ctx = canvas.getContext('2d');
+
+			setInterval(function () {
+				var frame = new Image();
+				frame.src = 'file:///C:/Users/Owner/Documents/frame.png';
+				ctx.drawImage(frame, 0, 0);
+			}, 16);
+		</script>
+	</body>
+</html>
