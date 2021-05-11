@@ -5,7 +5,7 @@ import { parse } from 'json5';
 import { homedir } from 'os';
 import { getEngineConfig } from './ConfigurationManager';
 
-export function getShadowEngineDataDir() {
+export function getShadowEngineDataDir(): string {
 	let directory: string;
 	if (process.platform == 'win32') {
 		directory = homedir() + '/AppData/Roaming/Shadow';
@@ -19,7 +19,7 @@ export function getShadowEngineDataDir() {
 /*
 	Get the currently open project, returns null if none is open (AS A STRING).
 */
-export function getOpenProject() {
+export function getOpenProject(): string {
 	// Synchronous to prevent future bugs :)
 	return parse(
 		readFileSync(

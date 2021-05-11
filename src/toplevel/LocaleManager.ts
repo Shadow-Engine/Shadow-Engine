@@ -3,7 +3,7 @@
 import { getEngineConfig } from './ConfigurationManager';
 
 const defaultLocale: string = 'en_US';
-export function getDefaultLocale() {
+export function getDefaultLocale(): string {
 	return defaultLocale;
 }
 

@@ -10,7 +10,7 @@ import { homedir } from 'os';
 		input:  #home/file.txt
 		output: /home/vn20/file.txt OR C:/Users/vn20/file.txt
 */
-export function expandPath(inputPath: string) {
+export function expandPath(inputPath: string): string {
 	let macroDir: string; // The part of the location string that expands
 	let macroLength: number; // The length of the macro is stored so the macro can be cut off later
 

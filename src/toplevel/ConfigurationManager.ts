@@ -115,7 +115,7 @@ export function modConfigFile(
 	* WARNING THIS FUNCTION HAS MACRO EXPANSION (SEE expandPath() IN src/toplevel/PathManager.ts)
 	* TO SPECIFY A PLAIN DIRECTORY, PREFIX A $ (Example: $/home/vn20/Desktop OR $C:/Users/vn20/Desktop)
 */
-export function readConfigFile(macroPath: string, setting: string) {
+export function readConfigFile(macroPath: string, setting: string): string {
 	// Pass macroPath through the path expander (PathManager.ts)
 	let expandedFilePath: string = expandPath(macroPath);
 
@@ -125,7 +125,7 @@ export function readConfigFile(macroPath: string, setting: string) {
 	return 'stub string';
 }
 
-export function getEngineConfig() {
+export function getEngineConfig(): object {
 	//Returns the whole engine configuration in an object
 	return parse(
 		readFileSync(
