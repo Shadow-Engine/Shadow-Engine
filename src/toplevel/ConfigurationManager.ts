@@ -7,7 +7,7 @@ import {
 	readFileSync,
 	writeFileSync
 } from 'fs';
-import { expandPath } from './PathManager';
+import { expandPath, MacroPath } from './PathManager';
 import { getShadowEngineDataDir } from './UtilitiesManager';
 import { parse, stringify } from 'json5';
 import { engineConfig } from '../res/engine-config';
@@ -71,7 +71,7 @@ export function initializeConfig() {
 	* TO SPECIFY A PLAIN DIRECTORY, PREFIX A $ (Example: $/home/vn20/Desktop OR $C:/Users/vn20/Desktop)
 */
 export function modConfigFile(
-	macroPath: string,
+	macroPath: MacroPath,
 	setting: string,
 	value: string
 ) {
@@ -86,11 +86,11 @@ export function modConfigFile(
 	let config: string = readFileSync(expandedFilePath, 'utf-8');
 	let configSplit = config.split('\n');
 	let settingMatch = null; // stores weather a pre-existing value is already in the config file
-	for (let i = 0; i < configSplit.length; i++) {
+	for (let i: number = 0; i < configSplit.length; i++) {
 		if (configSplit[i].split(':')[0] == setting) {
 			// Compare settings
 			settingMatch = i;
-			return; // save some loops
+			break; // save some loops
 		}
 	}
 
@@ -99,7 +99,6 @@ export function modConfigFile(
 	// the value inside the setting without having to move the line at all
 
 	if (settingMatch !== null) {
-		// TODO: This part doesn't work
 		// If there is a pre-existing setting, settingMatch will have the number and not be equal to null
 		let splicedInSetting: string = `${setting}:${value}`; // Construct the insert string
 		configSplit.splice(settingMatch, 1, splicedInSetting); // Splice the string in the array
@@ -115,17 +114,49 @@ export function modConfigFile(
 	* WARNING THIS FUNCTION HAS MACRO EXPANSION (SEE expandPath() IN src/toplevel/PathManager.ts)
 	* TO SPECIFY A PLAIN DIRECTORY, PREFIX A $ (Example: $/home/vn20/Desktop OR $C:/Users/vn20/Desktop)
 */
-export function readConfigFile(macroPath: string, setting: string): string {
+export function readConfigFile(macroPath: MacroPath, setting: string): string {
+	//NOTE Keep this function 100% synchronous otherwise you might have some problems
+
 	// Pass macroPath through the path expander (PathManager.ts)
 	let expandedFilePath: string = expandPath(macroPath);
 
-	//TODO: Finish this function
-	//NOTE Keep this function 100% synchronous otherwise you might have some problems
+	// If file doesn't exist, throw error
+	if (!existsSync(expandedFilePath)) {
+		throw new Error(`File ${expandedFilePath} doesn't exist`);
+	}
 
-	return 'stub string';
+	let config: string = readFileSync(expandedFilePath, 'utf-8');
+	let split: string[] = config.split('\n');
+
+	for (let i: number = 0; i < split.length; i++) {
+		if (split[i].split(':')[0] == setting) {
+			// Some string manipulation to grab the value
+			return split[i].substr(setting.length + 1);
+		}
+	}
+
+	//Return null if value isn't found
+	return null;
 }
 
-export function getEngineConfig(): object {
+interface engineConfig {
+	language: string;
+	useNativeTitleBar: boolean;
+	useNativePopups: boolean;
+	codeEditor: {
+		editorBackend: string;
+		showLineNumbers: boolean;
+		autoSave: boolean;
+		indentSize: number;
+		indentType: string;
+		rightToLeft: boolean;
+		lineWrapping: boolean;
+		codeLinting: boolean;
+		miniMap: boolean;
+	};
+}
+
+export function getEngineConfig(): engineConfig {
 	//Returns the whole engine configuration in an object
 	return parse(
 		readFileSync(

@@ -4,13 +4,19 @@
 import { getOpenProject, getShadowEngineDataDir } from './UtilitiesManager';
 import { homedir } from 'os';
 
+declare const validMacroPath: unique symbol;
+
+export type MacroPath = string & {
+	[validMacroPath]: true;
+};
+
 /*
 	Expand and reveal the true location of a path.
 	Example:
 		input:  #home/file.txt
 		output: /home/vn20/file.txt OR C:/Users/vn20/file.txt
 */
-export function expandPath(inputPath: string): string {
+export function expandPath(inputPath: MacroPath): string {
 	let macroDir: string; // The part of the location string that expands
 	let macroLength: number; // The length of the macro is stored so the macro can be cut off later
 
@@ -42,4 +48,18 @@ export function expandPath(inputPath: string): string {
 
 	let dirAfterMacroRemoval: string = inputPath.slice(macroLength); // Slices off the macro character( # $ / )
 	return macroDir + dirAfterMacroRemoval;
+}
+
+export function assertMacroPath(input: string): asserts input is MacroPath {
+	let inputValid: boolean = false;
+	let validStarters: string[] = ['/', '$', '#home', '#sddr'];
+	for (let i: number = 0; i < validStarters.length; i++) {
+		if (input.startsWith(validStarters[i])) {
+			inputValid = true;
+		}
+	}
+
+	if (!inputValid) {
+		throw new Error(`The string ${input} is not a valid MacroPath`);
+	}
 }

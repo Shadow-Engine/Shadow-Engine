@@ -32,5 +32,5 @@ export function getOpenProject(): string {
 export interface popupOptions {}
 
 export function createPopup(options: popupOptions) {
-	let useNativePopups: string = getEngineConfig().useNativePopups;
+	let useNativePopups: boolean = getEngineConfig().useNativePopups;
 }

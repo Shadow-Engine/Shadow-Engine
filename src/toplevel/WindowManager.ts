@@ -4,7 +4,7 @@ import { BrowserWindow } from 'electron';
 import { writeFileSync } from 'fs';
 import { getEngineConfig } from './ConfigurationManager';
 
-let useNativeTitlebar = getEngineConfig().useNativeTitleBar;
+let useNativeTitlebar: boolean = getEngineConfig().useNativeTitleBar;
 
 export function openProjectBrowser() {}
 
