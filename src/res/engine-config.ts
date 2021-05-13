@@ -14,3 +14,20 @@ export let engineConfig = {
 		miniMap: false
 	}
 };
+
+export interface engineConfigInterface {
+	language: string;
+	useNativeTitleBar: boolean;
+	useNativePopups: boolean;
+	codeEditor: {
+		editorBackend: string;
+		showLineNumbers: boolean;
+		autoSave: boolean;
+		indentSize: number;
+		indentType: string;
+		rightToLeft: boolean;
+		lineWrapping: boolean;
+		codeLinting: boolean;
+		miniMap: boolean;
+	};
+}

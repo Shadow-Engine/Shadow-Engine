@@ -3,7 +3,8 @@
 import { readFileSync } from 'fs';
 import { parse } from 'json5';
 import { homedir } from 'os';
-import { getEngineConfig } from './ConfigurationManager';
+import { getEngineConfig, readConfigFile } from './ConfigurationManager';
+import { assertMacroPath } from './PathManager';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -21,12 +22,9 @@ export function getShadowEngineDataDir(): string {
 */
 export function getOpenProject(): string {
 	// Synchronous to prevent future bugs :)
-	return parse(
-		readFileSync(
-			getShadowEngineDataDir() + '/engine-data/project.json5',
-			'utf-8'
-		)
-	).project;
+	let path: string = '#sddr/engine-config/project.sec';
+	assertMacroPath(path);
+	return readConfigFile(path, 'project');
 }
 
 export interface popupOptions {}

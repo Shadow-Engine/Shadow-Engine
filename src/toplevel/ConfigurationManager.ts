@@ -10,7 +10,7 @@ import {
 import { expandPath, MacroPath } from './PathManager';
 import { getShadowEngineDataDir } from './UtilitiesManager';
 import { parse, stringify } from 'json5';
-import { engineConfig } from '../res/engine-config';
+import { engineConfig, engineConfigInterface } from '../res/engine-config';
 
 /* interface configInitalizationArrayInterface {
 	file: object {
@@ -39,8 +39,8 @@ let configInitalizationArray = [
 	},
 	{
 		type: 'file',
-		location: shadowDataDir + '/engine-data/project.json5',
-		data: 'null'
+		location: shadowDataDir + '/engine-data/project.sec',
+		data: 'project:none'
 	}
 ];
 
@@ -139,24 +139,7 @@ export function readConfigFile(macroPath: MacroPath, setting: string): string {
 	return null;
 }
 
-interface engineConfig {
-	language: string;
-	useNativeTitleBar: boolean;
-	useNativePopups: boolean;
-	codeEditor: {
-		editorBackend: string;
-		showLineNumbers: boolean;
-		autoSave: boolean;
-		indentSize: number;
-		indentType: string;
-		rightToLeft: boolean;
-		lineWrapping: boolean;
-		codeLinting: boolean;
-		miniMap: boolean;
-	};
-}
-
-export function getEngineConfig(): engineConfig {
+export function getEngineConfig(): engineConfigInterface {
 	//Returns the whole engine configuration in an object
 	return parse(
 		readFileSync(
