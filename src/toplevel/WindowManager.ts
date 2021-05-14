@@ -8,7 +8,7 @@ let useNativeTitlebar: boolean = getEngineConfig().useNativeTitleBar;
 
 export function openProjectBrowser() {}
 
-interface WindowOptions {
+export interface WindowOptions {
 	decorations: windowDecorations;
 	x?: number;
 	y?: number;
