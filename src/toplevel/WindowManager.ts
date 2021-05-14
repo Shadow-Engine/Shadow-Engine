@@ -19,6 +19,7 @@ interface WindowOptions {
 type windowDecorations = 'basic' | 'undecorated' | 'tabbed' | 'tool';
 
 export function createWindow(settings: WindowOptions) {
+	//TODO this actual calling function probably has to be called from the main process with ipc so renderers can execute it
 	let window = new BrowserWindow({
 		width: settings.width,
 		height: settings.height,
@@ -30,7 +31,7 @@ export function createWindow(settings: WindowOptions) {
 		webPreferences: { nodeIntegration: true }
 	});
 
-	let frame = new BrowserWindow({
+	/* let frame = new BrowserWindow({
 		width: 800,
 		height: 450,
 		webPreferences: {
@@ -42,9 +43,9 @@ export function createWindow(settings: WindowOptions) {
 	frame.webContents.on('paint', function (event, dirty, image) {
 		writeFileSync('C:\\Users\\Owner\\Documents\\frame.png', image.toPNG());
 	});
-	frame.webContents.setFrameRate(60);
+	frame.webContents.setFrameRate(60); */
 
-	window.webContents.openDevTools();
+	//window.webContents.openDevTools();
 
 	window.loadFile(settings.url);
 	window.show();
