@@ -1,10 +1,9 @@
 //General Utils such as math functions, uuid generation, basic popups, etc...
 
-import { readFileSync } from 'fs';
-import { parse } from 'json5';
 import { homedir } from 'os';
 import { getEngineConfig, readConfigFile } from './ConfigurationManager';
 import { assertMacroPath } from './PathManager';
+import { exec } from 'child_process';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -31,4 +30,15 @@ export interface popupOptions {}
 
 export function createPopup(options: popupOptions) {
 	let useNativePopups: boolean = getEngineConfig().useNativePopups;
+}
+
+export function isAdmin(): boolean {
+	if (process.platform == 'win32') {
+		exec('NET SESSION', (error, stdout, stderr) => {
+			return stderr.length === 0 ? true : false;
+		});
+	} else {
+		//Assume POXIX / UNIX
+		return process.getgid() === 0 ? true : false;
+	}
 }
