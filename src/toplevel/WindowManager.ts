@@ -16,7 +16,11 @@ export interface WindowOptions {
 	width: number;
 	url: string;
 }
-type windowDecorations = 'basic' | 'undecorated' | 'tabbed' | 'tool';
+
+//A Basic type decoration is just a window that will follow useNativeTitlebar rules
+//Tabbed decoration is the type used on the main editor and it's really just a container for 'tab' decorations
+//undecorated type decorations might be a context menu, popup, or tooltip. Note that the undecorated type is not limited to just those types
+type windowDecorations = 'basic' | 'undecorated' | 'tabbed' | 'tab' | 'tool';
 
 export function createWindow(settings: WindowOptions) {
 	//TODO this actual calling function probably has to be called from the main process with ipc so renderers can execute it

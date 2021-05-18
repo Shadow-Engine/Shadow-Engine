@@ -63,6 +63,7 @@ export function initializeConfig() {
 			);
 		}
 	}
+	console.log('Initialized Config');
 }
 
 /*
