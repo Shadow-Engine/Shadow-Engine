@@ -4,8 +4,6 @@ import { BrowserView, BrowserWindow } from 'electron';
 import { writeFileSync } from 'fs';
 import { getEngineConfig } from './ConfigurationManager';
 
-let useNativeTitlebar: boolean = getEngineConfig().useNativeTitleBar;
-
 export function openProjectBrowser() {}
 
 export interface WindowOptions {
@@ -23,6 +21,8 @@ export interface WindowOptions {
 type windowDecorations = 'basic' | 'undecorated' | 'tabbed' | 'tab' | 'tool';
 
 export function createWindow(settings: WindowOptions) {
+	let useNativeTitlebar: boolean = getEngineConfig().useNativeTitleBar;
+
 	//TODO this actual calling function probably has to be called from the main process with ipc so renderers can execute it
 	let window = new BrowserWindow({
 		width: settings.width,

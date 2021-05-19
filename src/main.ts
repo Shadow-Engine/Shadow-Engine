@@ -1,8 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import {
-	getEngineConfig,
-	initializeConfig
-} from './toplevel/ConfigurationManager';
+import { initializeConfig } from './toplevel/ConfigurationManager';
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
 
 /*
