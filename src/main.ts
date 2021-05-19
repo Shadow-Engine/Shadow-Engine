@@ -15,7 +15,7 @@ function initMain() {
 		height: 450,
 		width: 800,
 		decorations: 'basic',
-		url: '../dom/frames/basic.html'
+		url: '../dom/index.html'
 	});
 }
 
@@ -39,24 +39,23 @@ ipcMain.on('main.createPopup', () => {});
 // Window Manager
 
 ipcMain.on('WindowManager.createWindow', (event, settings: WindowOptions) => {
-	let useNativeTitlebar: boolean = getEngineConfig().useNativeTitleBar;
+	// stub
+});
 
-	let window = new BrowserWindow({
-		width: settings.width,
-		height: settings.height,
-		center: true,
-		x: settings.x,
-		y: settings.y,
-		darkTheme: true,
-		frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
-		webPreferences: { nodeIntegration: true }
-	});
+ipcMain.on('WindowManager.maximizeToggle', () => {
+	//This works because when you click the maximize button even when
+	//you're not focused on the window, the act of clicking focuses it,
+	//unless the window's focusable value is false
+	if (BrowserWindow.getFocusedWindow().isMaximized()) {
+		BrowserWindow.getFocusedWindow().unmaximize();
+	} else {
+		BrowserWindow.getFocusedWindow().maximize();
+	}
+});
 
-	window.loadFile(settings.url);
-	window.show();
-	window.on('closed', function () {
-		window = null;
-	});
-
-	event.returnValue = window;
+ipcMain.on('WindowManager.minimize', () => {
+	//This works because when you click the minimize button even when
+	//you're not focused on the window, the act of clicking focuses it,
+	//unless the window's focusable value is false
+	BrowserWindow.getFocusedWindow().minimize();
 });

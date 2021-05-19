@@ -1,6 +1,6 @@
 // Manager for sending IPC messages between windows and creating windows
 
-import { BrowserWindow } from 'electron';
+import { BrowserView, BrowserWindow } from 'electron';
 import { writeFileSync } from 'fs';
 import { getEngineConfig } from './ConfigurationManager';
 
@@ -32,29 +32,40 @@ export function createWindow(settings: WindowOptions) {
 		y: settings.y,
 		darkTheme: true,
 		frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
-		webPreferences: { nodeIntegration: true }
+		webPreferences: { nodeIntegration: true },
+		minWidth: 100,
+		minHeight: 100
 	});
 
-	/* let frame = new BrowserWindow({
-		width: 800,
-		height: 450,
-		webPreferences: {
-			offscreen: true
-		}
-	});
-
-	frame.loadURL('https://github.com');
-	frame.webContents.on('paint', function (event, dirty, image) {
-		writeFileSync('C:\\Users\\Owner\\Documents\\frame.png', image.toPNG());
-	});
-	frame.webContents.setFrameRate(60); */
-
-	//window.webContents.openDevTools();
-
-	window.loadFile(settings.url);
+	window.loadFile('../dom/frames/basic.html');
 	window.show();
 	window.on('closed', function () {
 		window = null;
 	});
-	window.webContents.on('did-finish-load', () => {});
+	window.webContents.on('did-finish-load', () => {
+		// Send settings data to the window so it knows how to handle the current situation
+		window.webContents.send('windowConstructionOptions', {
+			useNativeTitlebar: useNativeTitlebar
+		});
+	});
+
+	// Load the actual content
+
+	let frame = new BrowserView({
+		webPreferences: {
+			nodeIntegration: true
+		}
+	});
+	window.setBrowserView(frame);
+	frame.setBounds({
+		width: settings.width,
+		x: 0,
+		height: useNativeTitlebar ? settings.height : settings.height - 29,
+		y: useNativeTitlebar ? 0 : 29
+	});
+	frame.webContents.loadFile(settings.url);
+	frame.setAutoResize({
+		height: true,
+		width: true
+	});
 }

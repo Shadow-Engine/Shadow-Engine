@@ -8,21 +8,16 @@
 		<link rel="stylesheet" href="../../styles/frames/basic.css" />
 	</head>
 	<body>
-		<div class="topbar"></div>
-		<!-- <canvas height="450" width="800" id="c"></canvas>
-		<script>
-			var canvas = document.getElementById('c');
-			var ctx = canvas.getContext('2d');
+		<div id="titlebar">
+			<div class="resizebar"></div>
+			<div class="grabbar"></div>
+			<div class="nav-icon close-nav-btn" onclick="window.close()"></div>
+			<div id="maximize" class="nav-icon min-max-nav-btn"></div>
+			<div id="minimize" class="nav-icon min-nav-btn"></div>
+		</div>
 
-			setInterval(function () {
-				var frame = new Image();
-				frame.src = 'file:///C:/Users/Owner/Documents/frame.png';
-				ctx.drawImage(frame, 0, 0);
-			}, 16);
-		</script> -->
 		<script>
-			require('../../dist/scripts/index.js');
+			require('../../dist/frames/basic.js');
 		</script>
-		<!-- <script src="../../dist/scripts/index.js"></script> -->
 	</body>
 </html>
