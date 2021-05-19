@@ -56,4 +56,5 @@ export function createWindow(settings: WindowOptions) {
 	window.on('closed', function () {
 		window = null;
 	});
+	window.webContents.on('did-finish-load', () => {});
 }
