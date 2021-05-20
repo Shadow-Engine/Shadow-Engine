@@ -9,3 +9,5 @@ export function repoPluginInstall(inputUri: string) {
 		onTop: true
 	});
 }
+
+export function initializePluginAuth() {}

@@ -41,6 +41,10 @@ let configInitalizationArray = [
 		type: 'file',
 		location: shadowDataDir + '/engine-data/project.sec',
 		data: 'project:none'
+	},
+	{
+		type: 'folder',
+		location: shadowDataDir + '/plugins'
 	}
 ];
 
