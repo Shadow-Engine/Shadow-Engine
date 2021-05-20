@@ -1,6 +1,60 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import { openProcessManager } from './scripts/ProcessManager';
 import { initializeConfig } from './toplevel/ConfigurationManager';
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
+
+const globalMenuTemplate: object[] = [
+	{
+		label: 'Shadow Engine',
+		submenu: [
+			{
+				label: 'Quit',
+				accelerator: 'CmdOrCtrl+Q',
+				click() {
+					app.quit();
+				}
+			},
+			{
+				label: 'Close Window',
+				accelerator: 'CmdOrCtrl+W',
+				click() {
+					BrowserWindow.getFocusedWindow().close();
+				}
+			},
+			{ type: 'separator' },
+			{
+				label: 'Toggle Parent DevTools',
+				accelerator: 'CmdOrCtrl+Shift+I',
+				click() {
+					BrowserWindow.getFocusedWindow().webContents.toggleDevTools();
+					BrowserWindow.getFocusedWindow().getBrowserView().setBounds({
+						height: 100,
+						width: 100,
+						x: 0,
+						y: 29
+					});
+				}
+			},
+			{
+				label: 'Toggle Child DevTools',
+				accelerator: 'CmdOrCtrl+Shift+C',
+				click() {
+					BrowserWindow.getFocusedWindow()
+						.getBrowserView()
+						.webContents.toggleDevTools();
+				}
+			},
+			{ type: 'separator' },
+			{
+				label: 'Open Process Manager',
+				accelerator: 'CmdOrCtrl+Shift+`',
+				click() {
+					openProcessManager();
+				}
+			}
+		]
+	}
+];
 
 /*
 	Prepare Shadow Engine config files, windows and whatnot
@@ -8,10 +62,29 @@ import { createWindow, WindowOptions } from './toplevel/WindowManager';
 function initMain() {
 	initializeConfig();
 
+	const menu = Menu.buildFromTemplate(globalMenuTemplate);
+	Menu.setApplicationMenu(menu);
+
 	createWindow({
 		height: 450,
 		width: 800,
 		decorations: 'basic',
+		url: '../dom/index.html'
+	});
+
+	createWindow({
+		height: 800,
+		width: 200,
+		decorations: 'undecorated',
+		url: '../dom/index.html',
+		x: 10,
+		y: 10
+	});
+
+	createWindow({
+		height: 450,
+		width: 800,
+		decorations: 'tool',
 		url: '../dom/index.html'
 	});
 }
@@ -56,3 +129,6 @@ ipcMain.on('WindowManager.minimize', () => {
 	//unless the window's focusable value is false
 	BrowserWindow.getFocusedWindow().minimize();
 });
+
+app.removeAsDefaultProtocolClient('shadow-engine');
+app.setAsDefaultProtocolClient('shadow-engine');
