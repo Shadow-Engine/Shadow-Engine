@@ -14,6 +14,7 @@ export interface WindowOptions {
 	width: number;
 	url: string;
 	onTop?: boolean;
+	ipcData?: string[]; // formatted like so: ["thisIsTheChannel:ThisIsTheContent", "thisIsTheChannel:ThisIsTheContent"]
 }
 
 //A Basic type decoration is just a window that will follow useNativeTitlebar rules
@@ -52,6 +53,13 @@ export function createWindow(settings: WindowOptions) {
 				window.webContents.send('windowConstructionOptions', {
 					useNativeTitlebar: useNativeTitlebar
 				});
+
+				for (let i: number = 0; i < settings.ipcData.length; i++) {
+					window.webContents.send(
+						settings.ipcData[i].split(':')[0],
+						settings.ipcData[i].split(':')[1]
+					);
+				}
 			});
 
 			// Load the actual content
@@ -95,6 +103,8 @@ export function createWindow(settings: WindowOptions) {
 				skipTaskbar: true
 			});
 
+			//TODO: Support IPC data here
+
 			window.loadFile(settings.url);
 			window.show();
 			window.on('closed', function () {
@@ -131,6 +141,12 @@ export function createWindow(settings: WindowOptions) {
 				window.webContents.send('windowConstructionOptions', {
 					useNativeTitlebar: useNativeTitlebar
 				});
+				for (let i: number = 0; i < settings.ipcData.length; i++) {
+					window.webContents.send(
+						settings.ipcData[i].split(':')[0],
+						settings.ipcData[i].split(':')[1]
+					);
+				}
 			});
 
 			// Load the actual content

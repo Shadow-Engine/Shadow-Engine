@@ -2,6 +2,9 @@ import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import { openProcessManager } from './scripts/ProcessManager';
 import { initializeConfig } from './toplevel/ConfigurationManager';
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
+import { resolve as pathresolve } from 'path';
+import electronIsDev = require('electron-is-dev');
+import { repoPluginInstall } from './toplevel/PluginManager';
 
 const globalMenuTemplate: object[] = [
 	{
@@ -65,6 +68,14 @@ function initMain() {
 	const menu = Menu.buildFromTemplate(globalMenuTemplate);
 	Menu.setApplicationMenu(menu);
 
+	//Check launch arguments for things like protocol handlers and launch arguments
+	for (let i: number = 0; i < process.argv.length; i++) {
+		if (process.argv[i].startsWith('shadow-engine://plugin')) {
+			repoPluginInstall(process.argv[i]);
+			return; // No need to execute any more of the program
+		}
+	}
+
 	createWindow({
 		height: 450,
 		width: 800,
@@ -72,21 +83,21 @@ function initMain() {
 		url: '../dom/index.html'
 	});
 
-	createWindow({
+	/* createWindow({
 		height: 800,
 		width: 200,
 		decorations: 'undecorated',
 		url: '../dom/index.html',
 		x: 10,
 		y: 10
-	});
+	}); */
 
-	createWindow({
+	/* createWindow({
 		height: 450,
 		width: 800,
 		decorations: 'tool',
 		url: '../dom/index.html'
-	});
+	}); */
 }
 
 app.on('ready', () => {
@@ -132,3 +143,11 @@ ipcMain.on('WindowManager.minimize', () => {
 
 app.removeAsDefaultProtocolClient('shadow-engine');
 app.setAsDefaultProtocolClient('shadow-engine');
+
+if (electronIsDev && process.platform === 'win32') {
+	app.setAsDefaultProtocolClient('shadow-engine', process.execPath, [
+		pathresolve(process.argv[1])
+	]);
+} else {
+	app.setAsDefaultProtocolClient('shadow-engine');
+}

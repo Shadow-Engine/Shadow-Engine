@@ -5,6 +5,9 @@ window.onload = function () {
 		if (constructionOptions.useNativeTitlebar) {
 			document.getElementById('titlebar').style.display = 'none';
 		}
+
+		//TODO: Delete me
+		document.write(constructionOptions.args.toString());
 	});
 
 	document.getElementById('maximize').addEventListener('click', function () {
