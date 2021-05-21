@@ -4,7 +4,10 @@ import { initializeConfig } from './toplevel/ConfigurationManager';
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
 import { resolve as pathresolve } from 'path';
 import electronIsDev = require('electron-is-dev');
-import { repoPluginInstall } from './toplevel/PluginManager';
+import {
+	initializePluginAuthentication,
+	repoPluginInstall
+} from './toplevel/PluginManager';
 
 const globalMenuTemplate: object[] = [
 	{
@@ -64,6 +67,7 @@ const globalMenuTemplate: object[] = [
 */
 function initMain() {
 	initializeConfig();
+	initializePluginAuthentication();
 
 	const menu = Menu.buildFromTemplate(globalMenuTemplate);
 	Menu.setApplicationMenu(menu);

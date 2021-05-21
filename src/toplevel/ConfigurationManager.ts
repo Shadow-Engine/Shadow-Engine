@@ -33,6 +33,10 @@ let configInitalizationArray = [
 		location: shadowDataDir + '/projects'
 	},
 	{
+		type: 'folder',
+		location: shadowDataDir + '/plugins'
+	},
+	{
 		type: 'file',
 		location: shadowDataDir + '/engine-data/config.json5',
 		data: stringify(engineConfig, null, 4)

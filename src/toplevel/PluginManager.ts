@@ -1,4 +1,7 @@
+import { modConfigFile } from './ConfigurationManager';
+import { assertMacroPath } from './PathManager';
 import { createWindow } from './WindowManager';
+import { v4 } from 'uuid';
 
 export function repoPluginInstall(inputUri: string) {
 	createWindow({
@@ -8,4 +11,12 @@ export function repoPluginInstall(inputUri: string) {
 		url: '../dom/Plugins/pluginInstall.html',
 		onTop: true
 	});
+}
+
+// Initialize the system for authenticating plugins,
+// this is in place
+export function initializePluginAuthentication(): void {
+	let path: string = '#sddr/plugins/auth.sec';
+	assertMacroPath(path);
+	modConfigFile(path, 'token', v4());
 }
