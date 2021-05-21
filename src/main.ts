@@ -155,3 +155,5 @@ if (electronIsDev && process.platform === 'win32') {
 } else {
 	app.setAsDefaultProtocolClient('shadow-engine');
 }
+
+// shadow-engine://plugin,tk.a77zsite.shadow.tscore

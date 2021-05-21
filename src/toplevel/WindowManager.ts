@@ -40,7 +40,8 @@ export function createWindow(settings: WindowOptions) {
 				webPreferences: { nodeIntegration: true },
 				minWidth: 100,
 				minHeight: 100,
-				alwaysOnTop: settings.onTop
+				alwaysOnTop: settings.onTop,
+				backgroundColor: '#222222'
 			});
 
 			window.loadFile('../dom/frames/basic.html');
@@ -53,13 +54,6 @@ export function createWindow(settings: WindowOptions) {
 				window.webContents.send('windowConstructionOptions', {
 					useNativeTitlebar: useNativeTitlebar
 				});
-
-				for (let i: number = 0; i < settings.ipcData.length; i++) {
-					window.webContents.send(
-						settings.ipcData[i].split(':')[0],
-						settings.ipcData[i].split(':')[1]
-					);
-				}
 			});
 
 			// Load the actual content
@@ -82,6 +76,17 @@ export function createWindow(settings: WindowOptions) {
 				width: true
 			});
 
+			frame.webContents.on('did-finish-load', function () {
+				if (settings.ipcData !== undefined) {
+					for (let i: number = 0; i < settings.ipcData.length; i++) {
+						frame.webContents.send(
+							settings.ipcData[i].split(':')[0],
+							settings.ipcData[i].split(':')[1]
+						);
+					}
+				}
+			});
+
 			break;
 		}
 		case 'undecorated': {
@@ -100,7 +105,8 @@ export function createWindow(settings: WindowOptions) {
 				resizable: false,
 				minimizable: false,
 				maximizable: false,
-				skipTaskbar: true
+				skipTaskbar: true,
+				backgroundColor: '#222222'
 			});
 
 			//TODO: Support IPC data here
@@ -128,7 +134,8 @@ export function createWindow(settings: WindowOptions) {
 				alwaysOnTop: settings.onTop,
 				resizable: false,
 				minimizable: false,
-				maximizable: false
+				maximizable: false,
+				backgroundColor: '#222222'
 			});
 
 			window.loadFile('../dom/frames/tool.html');
@@ -141,12 +148,6 @@ export function createWindow(settings: WindowOptions) {
 				window.webContents.send('windowConstructionOptions', {
 					useNativeTitlebar: useNativeTitlebar
 				});
-				for (let i: number = 0; i < settings.ipcData.length; i++) {
-					window.webContents.send(
-						settings.ipcData[i].split(':')[0],
-						settings.ipcData[i].split(':')[1]
-					);
-				}
 			});
 
 			// Load the actual content
@@ -167,6 +168,17 @@ export function createWindow(settings: WindowOptions) {
 			frame.setAutoResize({
 				height: true,
 				width: true
+			});
+
+			frame.webContents.on('did-finish-load', function () {
+				if (settings.ipcData !== undefined) {
+					for (let i: number = 0; i < settings.ipcData.length; i++) {
+						frame.webContents.send(
+							settings.ipcData[i].split(':')[0],
+							settings.ipcData[i].split(':')[1]
+						);
+					}
+				}
 			});
 
 			break;

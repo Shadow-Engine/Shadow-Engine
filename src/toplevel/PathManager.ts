@@ -24,7 +24,7 @@ export function expandPath(inputPath: MacroPath): string {
 	switch (inputPath.charAt(0)) {
 		case '#': // This macro can expand to become a certain directory on the system.
 			// 4 characters define what directory this macro expands to.
-			switch (inputPath.substr(1, 5)) {
+			switch (inputPath.substr(1, 4)) {
 				case 'home': // Expands to the home directory on the system
 					macroDir = homedir();
 					macroLength = 5;

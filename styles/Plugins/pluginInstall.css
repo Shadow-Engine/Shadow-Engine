@@ -1,0 +1,18 @@
+.icon-col {
+	position: fixed;
+	height: 100%;
+	width: 90px;
+	left: 10px;
+}
+
+.icon-col img {
+	margin-top: 10px;
+	border-radius: 10px;
+}
+
+.content-col {
+	position: fixed;
+	left: 110px;
+	top: 10px;
+	height: 100%;
+}

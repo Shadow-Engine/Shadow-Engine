@@ -9,7 +9,8 @@ export function repoPluginInstall(inputUri: string) {
 		height: 600,
 		width: 800,
 		url: '../dom/Plugins/pluginInstall.html',
-		onTop: true
+		onTop: true,
+		ipcData: [`packageId:${inputUri.split(',')[1]}`]
 	});
 }
 
