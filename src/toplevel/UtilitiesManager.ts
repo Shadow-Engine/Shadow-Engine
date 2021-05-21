@@ -42,3 +42,15 @@ export function isAdmin(): boolean {
 		return process.getgid() === 0 ? true : false;
 	}
 }
+
+//Gets the line ending type of a string, most commonly used for checking file line endings
+//Returns a string of which line ending type is used
+export function getLineEnding(fileContent: string): string {
+	const indexOfLF = fileContent.indexOf('\n', 1); // No need to check first-character
+	if (indexOfLF === -1) {
+		if (fileContent.indexOf('\r') !== -1) return '\r';
+		return '\n';
+	}
+	if (fileContent[indexOfLF - 1] === '\r') return '\r\n';
+	return '\n';
+}
