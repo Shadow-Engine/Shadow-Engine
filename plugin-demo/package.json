@@ -1,0 +1,14 @@
+{
+  "name": "plugin-demo",
+  "version": "0.0.1",
+  "description": "Plugin Demo For Shadow Engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Vince R",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^7.4.5"
+  }
+}

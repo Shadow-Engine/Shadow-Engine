@@ -1,3 +1,5 @@
+// THIS IS A RENDERER SCRIPT
+
 import { ipcRenderer } from 'electron';
 
 window.onload = function () {
