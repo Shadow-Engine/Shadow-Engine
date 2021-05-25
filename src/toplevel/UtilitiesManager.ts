@@ -4,6 +4,7 @@ import { homedir } from 'os';
 import { getEngineConfig, readConfigFile } from './ConfigurationManager';
 import { assertMacroPath } from './PathManager';
 import { exec } from 'child_process';
+import { lstatSync } from 'original-fs';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -53,4 +54,10 @@ export function getLineEnding(fileContent: string): string {
 	}
 	if (fileContent[indexOfLF - 1] === '\r') return '\r\n';
 	return '\n';
+}
+
+// Check if a specified path is a directory,
+// Returns boolean
+export function isDirectory(path: string): boolean {
+	return lstatSync(path).isDirectory();
 }
