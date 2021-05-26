@@ -3,7 +3,7 @@
 import { ipcRenderer } from 'electron';
 
 window.onload = function () {
-	ipcRenderer.on('windowConstructionOptions', (event, constructionOptions) => {
+	ipcRenderer.on('windowConstructionOptions', (_event, constructionOptions) => {
 		if (constructionOptions.useNativeTitlebar) {
 			document.getElementById('titlebar').style.display = 'none';
 		}
@@ -19,4 +19,11 @@ window.onload = function () {
 	document.getElementById('minimize').addEventListener('click', function () {
 		ipcRenderer.send('WindowManager.minimize');
 	});
+
+	if (process.platform == 'darwin') {
+		// MacOS Detected, remove standard nav buttons
+		document.getElementById('close').style.display = 'none';
+		document.getElementById('minimize').style.display = 'none';
+		document.getElementById('maximize').style.display = 'none';
+	}
 };

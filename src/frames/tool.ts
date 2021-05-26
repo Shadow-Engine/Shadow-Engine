@@ -8,4 +8,9 @@ window.onload = function () {
 			document.getElementById('titlebar').style.display = 'none';
 		}
 	});
+
+	if (process.platform == 'darwin') {
+		// MacOS Detected, remove standard nav button
+		document.getElementById('close').style.display = 'none';
+	}
 };

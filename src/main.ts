@@ -80,10 +80,17 @@ function initMain() {
 		}
 	}
 
-	createWindow({
+	/* createWindow({
 		height: 450,
 		width: 800,
 		decorations: 'basic',
+		url: '../dom/index.html'
+	}); */
+
+	createWindow({
+		decorations: 'tabbed',
+		width: 1200,
+		height: 800,
 		url: '../dom/index.html'
 	});
 

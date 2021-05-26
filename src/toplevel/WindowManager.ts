@@ -41,7 +41,9 @@ export function createWindow(settings: WindowOptions) {
 				minWidth: 100,
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
-				backgroundColor: '#222222'
+				backgroundColor: '#222222',
+				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
+				trafficLightPosition: { x: 5, y: 5 }
 			});
 
 			window.loadFile('../dom/frames/basic.html');
@@ -76,6 +78,7 @@ export function createWindow(settings: WindowOptions) {
 				width: true
 			});
 
+			// Pass IPC Data
 			frame.webContents.on('did-finish-load', function () {
 				if (settings.ipcData !== undefined) {
 					for (let i: number = 0; i < settings.ipcData.length; i++) {
@@ -135,7 +138,9 @@ export function createWindow(settings: WindowOptions) {
 				resizable: false,
 				minimizable: false,
 				maximizable: false,
-				backgroundColor: '#222222'
+				backgroundColor: '#222222',
+				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
+				trafficLightPosition: { x: 5, y: 5 }
 			});
 
 			window.loadFile('../dom/frames/tool.html');
@@ -180,6 +185,43 @@ export function createWindow(settings: WindowOptions) {
 					}
 				}
 			});
+
+			break;
+		}
+		case 'tabbed': {
+			let window = new BrowserWindow({
+				width: settings.width,
+				height: settings.height,
+				center: true,
+				x: settings.x,
+				y: settings.y,
+				darkTheme: true,
+				frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
+				webPreferences: { nodeIntegration: true },
+				minWidth: 100,
+				minHeight: 100,
+				alwaysOnTop: settings.onTop,
+				backgroundColor: '#222222',
+				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
+				trafficLightPosition: { x: 5, y: 5 }
+			});
+
+			window.loadFile('../dom/frames/tabbed.html');
+			window.show();
+			window.on('closed', function () {
+				window = null;
+			});
+			window.webContents.on('did-finish-load', () => {
+				// Send settings data to the window so it knows how to handle the current situation
+				window.webContents.send('windowConstructionOptions', {
+					useNativeTitlebar: useNativeTitlebar
+				});
+			});
+
+			// Here's where we would normally create the BrowserView for the window,
+			// tabbed windows are special in that they can't hold content, only tabs.
+			// So in this case, when the user specifies settings.url, we're really just
+			// creating a 'tab' window and attaching it to this one
 
 			break;
 		}

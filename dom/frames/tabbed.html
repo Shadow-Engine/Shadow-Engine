@@ -5,12 +5,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Shadow Engine</title>
-		<link rel="stylesheet" href="../../styles/frames/basic.css" />
+		<link rel="stylesheet" href="../../styles/frames/tabbed.css" />
 	</head>
 	<body>
 		<div id="titlebar">
 			<div class="resizebar"></div>
-			<div class="grabbar"></div>
+			<div class="grabbar">
+				<div id="woodmark" class="woodmark"></div>
+			</div>
 			<div
 				id="close"
 				class="nav-icon close-nav-btn"
@@ -21,7 +23,7 @@
 		</div>
 
 		<script>
-			require('../../dist/frames/basic.js');
+			require('../../dist/frames/tabbed.js');
 		</script>
 	</body>
 </html>
