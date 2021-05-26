@@ -81,3 +81,18 @@
 	right: 5px;
 	left: unset;
 }
+
+.tab-container {
+	background: #f00;
+	position: fixed;
+	height: 26px;
+	left: 30px;
+	/*                 icon   nav buttons */
+	width: calc(100% - 30px - 144px);
+}
+
+.macos-tab-container {
+	left: 120px;
+	/*        traffic lights  icon */
+	width: calc(100% - 120px - 30px);
+}

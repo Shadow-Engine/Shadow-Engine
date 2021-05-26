@@ -24,6 +24,9 @@ window.onload = function () {
 		// create space for traffic lights, and
 		// remove standard nav buttons
 		document.getElementById('woodmark').classList.add('macos-woodmark');
+		document
+			.getElementById('tab-container')
+			.classList.add('macos-tab-container');
 
 		document.getElementById('close').style.display = 'none';
 		document.getElementById('minimize').style.display = 'none';
