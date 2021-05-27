@@ -225,5 +225,74 @@ export function createWindow(settings: WindowOptions) {
 
 			break;
 		}
+		case 'tab': {
+			//A tab can be a child to a tabbed window or be standalone
+
+			let window = new BrowserWindow({
+				width: settings.width,
+				height: settings.height,
+				center: true,
+				x: settings.x,
+				y: settings.y,
+				darkTheme: true,
+				frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
+				webPreferences: { nodeIntegration: true },
+				minWidth: 100,
+				minHeight: 100,
+				alwaysOnTop: settings.onTop,
+				backgroundColor: '#222222',
+				maximizable: false,
+				minimizable: false,
+				resizable: true,
+				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
+				trafficLightPosition: { x: 5, y: 5 }
+			});
+
+			window.loadFile('../dom/frames/tab.html');
+			window.show();
+			window.on('closed', function () {
+				window = null;
+			});
+			window.webContents.on('did-finish-load', () => {
+				// Send settings data to the window so it knows how to handle the current situation
+				window.webContents.send('windowConstructionOptions', {
+					useNativeTitlebar: useNativeTitlebar
+				});
+			});
+
+			// Load the actual content
+
+			let frame = new BrowserView({
+				webPreferences: {
+					nodeIntegration: true
+				}
+			});
+			window.setBrowserView(frame);
+			frame.setBounds({
+				width: settings.width,
+				x: 0,
+				height: useNativeTitlebar ? settings.height : settings.height - 18,
+				y: useNativeTitlebar ? 0 : 18
+			});
+			frame.webContents.loadFile(settings.url);
+			frame.setAutoResize({
+				height: true,
+				width: true
+			});
+
+			// Pass IPC Data
+			frame.webContents.on('did-finish-load', function () {
+				if (settings.ipcData !== undefined) {
+					for (let i: number = 0; i < settings.ipcData.length; i++) {
+						frame.webContents.send(
+							settings.ipcData[i].split(':')[0],
+							settings.ipcData[i].split(':')[1]
+						);
+					}
+				}
+			});
+
+			break;
+		}
 	}
 }

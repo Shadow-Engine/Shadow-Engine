@@ -57,6 +57,13 @@ const globalMenuTemplate: object[] = [
 				click() {
 					openProcessManager();
 				}
+			},
+			{
+				label: 'Reload Window',
+				accelerator: 'CmdOrCtrl+R',
+				click() {
+					BrowserWindow.getFocusedWindow().reload();
+				}
 			}
 		]
 	}
@@ -90,6 +97,13 @@ function initMain() {
 	createWindow({
 		decorations: 'tabbed',
 		width: 1200,
+		height: 800,
+		url: '../dom/index.html'
+	});
+
+	createWindow({
+		decorations: 'tab',
+		width: 800,
 		height: 800,
 		url: '../dom/index.html'
 	});
