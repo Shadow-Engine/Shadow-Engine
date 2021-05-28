@@ -112,7 +112,22 @@ export function createWindow(settings: WindowOptions) {
 				backgroundColor: '#222222'
 			});
 
-			//TODO: Support IPC data here
+			//TODO: Support newer IPC data in other decoration types
+			//NOTE: This is a newer IPC function that allows colons ( : ) in the content
+
+			window.webContents.on('did-finish-load', function () {
+				if (settings.ipcData !== undefined) {
+					for (let i: number = 0; i < settings.ipcData.length; i++) {
+						let channel = settings.ipcData[i].split(':')[0];
+
+						// Get content by chopping off the length of the channel + 1 (for the colon)
+						let content = settings.ipcData[i].substr(channel.length + 1);
+
+						window.webContents.send(channel, content);
+						break; // Save loops
+					}
+				}
+			});
 
 			window.loadFile(settings.url);
 			window.show();
