@@ -1,10 +1,11 @@
 //General Utils such as math functions, uuid generation, basic popups, etc...
 
 import { homedir } from 'os';
-import { getEngineConfig, readConfigFile } from './ConfigurationManager';
+import { readConfigFile } from './ConfigurationManager';
 import { assertMacroPath } from './PathManager';
 import { exec } from 'child_process';
 import { lstatSync } from 'original-fs';
+import { ipcRenderer } from 'electron';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -27,10 +28,17 @@ export function getOpenProject(): string {
 	return readConfigFile(path, 'project');
 }
 
+// When we create popups we don't want the Utilites Manager to handle
+// everything, instead we pass it on to the main process so that we
+// can create native dialogs when the config is set to that, and so
+// that any renderer script can create a popup, because making
+// BrowserWindows from within BrowserWindow is not the best idea
 export interface popupOptions {}
 
-export function createPopup(options: popupOptions) {
-	let useNativePopups: boolean = getEngineConfig().useNativePopups;
+export function createInformationPopup(options: popupOptions) {}
+
+export function createErrorPopup(title: string, content: string) {
+	ipcRenderer.send('util.createErrorPopup', title, content);
 }
 
 export function isAdmin(): boolean {

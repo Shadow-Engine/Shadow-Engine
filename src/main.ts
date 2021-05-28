@@ -1,6 +1,9 @@
-import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { openProcessManager } from './scripts/ProcessManager';
-import { initializeConfig } from './toplevel/ConfigurationManager';
+import {
+	getEngineConfig,
+	initializeConfig
+} from './toplevel/ConfigurationManager';
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
 import { resolve as pathresolve } from 'path';
 import electronIsDev = require('electron-is-dev');
@@ -8,6 +11,7 @@ import {
 	initializePluginAuthentication,
 	repoPluginInstall
 } from './toplevel/PluginManager';
+import { createErrorPopup } from './toplevel/UtilitiesManager';
 
 const globalMenuTemplate: object[] = [
 	{
@@ -94,7 +98,7 @@ function initMain() {
 		url: '../dom/index.html'
 	}); */
 
-	createWindow({
+	/* createWindow({
 		decorations: 'tabbed',
 		width: 1200,
 		height: 800,
@@ -106,7 +110,7 @@ function initMain() {
 		width: 800,
 		height: 800,
 		url: '../dom/index.html'
-	});
+	}); */
 
 	/* createWindow({
 		height: 800,
@@ -123,6 +127,8 @@ function initMain() {
 		decorations: 'tool',
 		url: '../dom/index.html'
 	}); */
+
+	createErrorPopup('Shadow Engine Internal Error', 'lol u thought');
 }
 
 app.on('ready', () => {
@@ -140,12 +146,32 @@ app.on('window-all-closed', () => {
 });
 
 // Utilities Manager
-ipcMain.on('main.createPopup', () => {});
+ipcMain.on('util.createErrorPopup', (_event, title, content) => {
+	if (getEngineConfig().useNativePopups) {
+		//Native Error Dialog
+		dialog.showErrorBox(title, content);
+	} else {
+		//Shadow Error Dialog
+		createWindow({
+			decorations: 'undecorated',
+			height: 300,
+			width: 600,
+			url: '../dom/Popups/error.html',
+			ipcData: [`title:${title}`, `content:${content}`]
+		});
+	}
+});
 
 // Window Manager
 
 ipcMain.on('WindowManager.createWindow', (event, settings: WindowOptions) => {
 	// stub
+});
+
+// Tab Manager
+
+ipcMain.on('dragTabEvent', (event) => {
+	/* event.sender.getOwnerBrowserWindow(). */
 });
 
 ipcMain.on('WindowManager.maximizeToggle', () => {
