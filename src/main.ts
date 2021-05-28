@@ -128,7 +128,7 @@ function initMain() {
 		url: '../dom/index.html'
 	}); */
 
-	createErrorPopup('Shadow Engine Internal Error', 'lol u thought');
+	createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
 app.on('ready', () => {
@@ -147,6 +147,10 @@ app.on('window-all-closed', () => {
 
 // Utilities Manager
 ipcMain.on('util.createErrorPopup', (_event, title, content) => {
+	createErrorPopupFromMAIN(title, content);
+});
+
+export function createErrorPopupFromMAIN(title: string, content: string) {
 	if (getEngineConfig().useNativePopups) {
 		//Native Error Dialog
 		dialog.showErrorBox(title, content);
@@ -160,7 +164,7 @@ ipcMain.on('util.createErrorPopup', (_event, title, content) => {
 			ipcData: [`title:${title}`, `content:${content}`]
 		});
 	}
-});
+}
 
 // Window Manager
 

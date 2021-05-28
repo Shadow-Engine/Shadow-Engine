@@ -6,6 +6,8 @@ import { assertMacroPath } from './PathManager';
 import { exec } from 'child_process';
 import { lstatSync } from 'original-fs';
 import { ipcRenderer } from 'electron';
+import * as isRenderer from 'is-electron-renderer';
+import { createErrorPopupFromMAIN } from '../main';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -38,7 +40,11 @@ export interface popupOptions {}
 export function createInformationPopup(options: popupOptions) {}
 
 export function createErrorPopup(title: string, content: string) {
-	ipcRenderer.send('util.createErrorPopup', title, content);
+	if (isRenderer) {
+		ipcRenderer.send('util.createErrorPopup', title, content);
+	} else {
+		createErrorPopupFromMAIN(title, content);
+	}
 }
 
 export function isAdmin(): boolean {
