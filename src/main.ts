@@ -9,6 +9,7 @@ import { resolve as pathresolve } from 'path';
 import electronIsDev = require('electron-is-dev');
 import {
 	initializePluginAuthentication,
+	refreshPluginTable,
 	repoPluginInstall
 } from './toplevel/PluginManager';
 import { createErrorPopup } from './toplevel/UtilitiesManager';
@@ -128,7 +129,8 @@ function initMain() {
 		url: '../dom/index.html'
 	}); */
 
-	createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
+	refreshPluginTable();
+	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
 app.on('ready', () => {

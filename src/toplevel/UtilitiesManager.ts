@@ -4,7 +4,7 @@ import { homedir } from 'os';
 import { readConfigFile } from './ConfigurationManager';
 import { assertMacroPath } from './PathManager';
 import { exec } from 'child_process';
-import { lstatSync } from 'original-fs';
+import { lstatSync } from 'fs';
 import { ipcRenderer } from 'electron';
 import * as isRenderer from 'is-electron-renderer';
 import { createErrorPopupFromMAIN } from '../main';
