@@ -146,7 +146,7 @@ export function createWindow(settings: WindowOptions) {
 				y: settings.y,
 				darkTheme: true,
 				frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
-				webPreferences: { nodeIntegration: true },
+				webPreferences: { nodeIntegration: true, contextIsolation: false },
 				minWidth: 100,
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
@@ -200,6 +200,20 @@ export function createWindow(settings: WindowOptions) {
 					}
 				}
 			});
+
+			/* frame.webContents.on('did-finish-load', function () {
+				if (settings.ipcData !== undefined) {
+					for (let i: number = 0; i < settings.ipcData.length; i++) {
+						let channel = settings.ipcData[i].split(':')[0];
+
+						// Get content by chopping off the length of the channel + 1 (for the colon)
+						let content = settings.ipcData[i].substr(channel.length + 1);
+
+						frame.webContents.send(channel, content);
+						break; // Save loops
+					}
+				}
+			}); */
 
 			break;
 		}

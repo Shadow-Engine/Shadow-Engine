@@ -3,6 +3,7 @@ TODO FOR SHADOW ENGINE
 	- Finish Popups
 	- Port new IPC Passthrough function to decoration types other than undecorated
 	- Finish lockdownPlugins function and the rest of the plugins permission system
+	- Fix require is not defined on pluginInstaller
 
 
 Possible plugin permissions:
