@@ -67,8 +67,21 @@ export function refreshPluginTable() {
 
 			newPluginTable.push({
 				id: readConfigFile(path, 'id'),
-				pretty: readConfigFile(path, 'pretty')
+				pretty: readConfigFile(path, 'pretty'),
+				version: readConfigFile(path, 'version'),
+				copyright: readConfigFile(path, 'copyright'),
+				author: readConfigFile(path, 'author')
 			});
 		}
 	}
 }
+
+// TODO: This is a stub
+// This function is designed to loop through every single js file in a plugin
+// and add a similar piece of code that can be found in dumbPermissionTest.js
+// that's designed to override the require function so that plugins have to
+// state what modules they will be requiring in their plug.sec config, then
+// Shadow Engine will allow use of the specified modules. This is in place so
+// that the end user installing plugins knows what plugins have access to
+// before they actually install the plugin.
+export function lockdownPlugins() {}

@@ -2,3 +2,17 @@ TODO FOR SHADOW ENGINE
 
 	- Finish Popups
 	- Port new IPC Passthrough function to decoration types other than undecorated
+	- Finish lockdownPlugins function and the rest of the plugins permission system
+
+
+Possible plugin permissions:
+
+	shadow.downloadManager
+	node.fs
+	node.crypto
+	node.child_process
+	node.dns
+	node.http
+	node.https
+	node.os
+	node.path
