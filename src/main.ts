@@ -130,7 +130,7 @@ function initMain() {
 	}); */
 
 	refreshPluginTable();
-	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
+	createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
 app.on('ready', () => {
@@ -163,7 +163,8 @@ export function createErrorPopupFromMAIN(title: string, content: string) {
 			height: 300,
 			width: 600,
 			url: '../dom/Popups/error.html',
-			ipcData: [`title:${title}`, `content:${content}`]
+			ipcData: [`title:${title}`, `content:${content}`],
+			onTop: true
 		});
 	}
 }

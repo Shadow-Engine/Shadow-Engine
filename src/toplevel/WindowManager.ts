@@ -1,7 +1,6 @@
 // Manager for sending IPC messages between windows and creating windows
 
 import { BrowserView, BrowserWindow } from 'electron';
-import { writeFileSync } from 'fs';
 import { getEngineConfig } from './ConfigurationManager';
 
 export function openProjectBrowser() {}
@@ -37,7 +36,7 @@ export function createWindow(settings: WindowOptions) {
 				y: settings.y,
 				darkTheme: true,
 				frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
-				webPreferences: { nodeIntegration: true },
+				webPreferences: { nodeIntegration: true, contextIsolation: false },
 				minWidth: 100,
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
@@ -62,7 +61,8 @@ export function createWindow(settings: WindowOptions) {
 
 			let frame = new BrowserView({
 				webPreferences: {
-					nodeIntegration: true
+					nodeIntegration: true,
+					contextIsolation: false
 				}
 			});
 			window.setBrowserView(frame);
@@ -82,10 +82,13 @@ export function createWindow(settings: WindowOptions) {
 			frame.webContents.on('did-finish-load', function () {
 				if (settings.ipcData !== undefined) {
 					for (let i: number = 0; i < settings.ipcData.length; i++) {
-						frame.webContents.send(
-							settings.ipcData[i].split(':')[0],
-							settings.ipcData[i].split(':')[1]
-						);
+						let channel = settings.ipcData[i].split(':')[0];
+
+						// Get content by chopping off the length of the channel + 1 (for the colon)
+						let content = settings.ipcData[i].substr(channel.length + 1);
+
+						frame.webContents.send(channel, content);
+						break; // Save loops
 					}
 				}
 			});
@@ -101,7 +104,7 @@ export function createWindow(settings: WindowOptions) {
 				y: settings.y,
 				darkTheme: true,
 				frame: false,
-				webPreferences: { nodeIntegration: true },
+				webPreferences: { nodeIntegration: true, contextIsolation: false },
 				minWidth: 100,
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
@@ -174,7 +177,8 @@ export function createWindow(settings: WindowOptions) {
 
 			let frame = new BrowserView({
 				webPreferences: {
-					nodeIntegration: true
+					nodeIntegration: true,
+					contextIsolation: false
 				}
 			});
 			window.setBrowserView(frame);
@@ -193,17 +197,6 @@ export function createWindow(settings: WindowOptions) {
 			frame.webContents.on('did-finish-load', function () {
 				if (settings.ipcData !== undefined) {
 					for (let i: number = 0; i < settings.ipcData.length; i++) {
-						frame.webContents.send(
-							settings.ipcData[i].split(':')[0],
-							settings.ipcData[i].split(':')[1]
-						);
-					}
-				}
-			});
-
-			/* frame.webContents.on('did-finish-load', function () {
-				if (settings.ipcData !== undefined) {
-					for (let i: number = 0; i < settings.ipcData.length; i++) {
 						let channel = settings.ipcData[i].split(':')[0];
 
 						// Get content by chopping off the length of the channel + 1 (for the colon)
@@ -213,7 +206,7 @@ export function createWindow(settings: WindowOptions) {
 						break; // Save loops
 					}
 				}
-			}); */
+			});
 
 			break;
 		}
@@ -226,7 +219,7 @@ export function createWindow(settings: WindowOptions) {
 				y: settings.y,
 				darkTheme: true,
 				frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
-				webPreferences: { nodeIntegration: true },
+				webPreferences: { nodeIntegration: true, contextIsolation: false },
 				minWidth: 100,
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
@@ -265,7 +258,7 @@ export function createWindow(settings: WindowOptions) {
 				y: settings.y,
 				darkTheme: true,
 				frame: useNativeTitlebar, // if useNativeTitlebar is true, then so is the frame
-				webPreferences: { nodeIntegration: true },
+				webPreferences: { nodeIntegration: true, contextIsolation: false },
 				minWidth: 100,
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
@@ -293,7 +286,8 @@ export function createWindow(settings: WindowOptions) {
 
 			let frame = new BrowserView({
 				webPreferences: {
-					nodeIntegration: true
+					nodeIntegration: true,
+					contextIsolation: false
 				}
 			});
 			window.setBrowserView(frame);
@@ -313,10 +307,13 @@ export function createWindow(settings: WindowOptions) {
 			frame.webContents.on('did-finish-load', function () {
 				if (settings.ipcData !== undefined) {
 					for (let i: number = 0; i < settings.ipcData.length; i++) {
-						frame.webContents.send(
-							settings.ipcData[i].split(':')[0],
-							settings.ipcData[i].split(':')[1]
-						);
+						let channel = settings.ipcData[i].split(':')[0];
+
+						// Get content by chopping off the length of the channel + 1 (for the colon)
+						let content = settings.ipcData[i].substr(channel.length + 1);
+
+						frame.webContents.send(channel, content);
+						break; // Save loops
 					}
 				}
 			});
