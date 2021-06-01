@@ -25,14 +25,11 @@
 	right: 0;
 	height: 29px;
 	width: 48px;
-	background: transparent;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #ffffff;
 	transition: 0.2s;
 	-webkit-app-region: no-drag;
 	z-index: 9999;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 .nav-icon:hover {
@@ -41,26 +38,20 @@
 
 .close-nav-btn {
 	background-image: url('../../media/frames/close.svg');
-	background-position: center;
-	background-repeat: no-repeat;
 }
 
 .close-nav-btn:hover {
-	background-color: red;
+	background-color: #ff4848;
 }
 
 .min-max-nav-btn {
 	right: 48px;
 	background-image: url('../../media/frames/maximize.svg');
-	background-position: center;
-	background-repeat: no-repeat;
 }
 
 .min-nav-btn {
 	right: 96px;
 	background-image: url('../../media/frames/minimize.svg');
-	background-position: center;
-	background-repeat: no-repeat;
 }
 
 /* Small Shadow Engine logo in the corner */
