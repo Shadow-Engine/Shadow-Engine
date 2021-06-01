@@ -1,6 +1,6 @@
 TODO FOR SHADOW ENGINE
 
-	- Finish Popups
+	- Finish Popups (add button support similar to electron)
 	- Finish lockdownPlugins function and the rest of the plugins permission system
 
 	- Port new IPC Passthrough function to decoration types other than undecorated -- DONE

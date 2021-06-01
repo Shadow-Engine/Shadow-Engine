@@ -162,8 +162,8 @@ export function createErrorPopupFromMAIN(title: string, content: string) {
 			decorations: 'undecorated',
 			height: 300,
 			width: 600,
-			url: '../dom/Popups/error.html',
-			ipcData: [`title:${title}`, `content:${content}`],
+			url: '../dom/Popups/popup.html',
+			ipcData: ['type:error', `title:${title}`, `content:${content}`],
 			onTop: true
 		});
 	}
