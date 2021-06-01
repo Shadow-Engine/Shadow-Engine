@@ -88,7 +88,6 @@ export function createWindow(settings: WindowOptions) {
 						let content = settings.ipcData[i].substr(channel.length + 1);
 
 						frame.webContents.send(channel, content);
-						break; // Save loops
 					}
 				}
 			});
@@ -127,7 +126,6 @@ export function createWindow(settings: WindowOptions) {
 						let content = settings.ipcData[i].substr(channel.length + 1);
 
 						window.webContents.send(channel, content);
-						break; // Save loops
 					}
 				}
 			});
@@ -203,7 +201,6 @@ export function createWindow(settings: WindowOptions) {
 						let content = settings.ipcData[i].substr(channel.length + 1);
 
 						frame.webContents.send(channel, content);
-						break; // Save loops
 					}
 				}
 			});
@@ -313,7 +310,6 @@ export function createWindow(settings: WindowOptions) {
 						let content = settings.ipcData[i].substr(channel.length + 1);
 
 						frame.webContents.send(channel, content);
-						break; // Save loops
 					}
 				}
 			});
