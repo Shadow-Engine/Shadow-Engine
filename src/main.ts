@@ -47,6 +47,13 @@ const globalMenuTemplate: object[] = [
 				}
 			},
 			{
+				label: 'Toggle Parent DevTools Without Child WebView interference',
+				accelerator: 'CmdOrCtrl+Shift+O',
+				click() {
+					BrowserWindow.getFocusedWindow().webContents.toggleDevTools();
+				}
+			},
+			{
 				label: 'Toggle Child DevTools',
 				accelerator: 'CmdOrCtrl+Shift+C',
 				click() {
