@@ -99,45 +99,20 @@ function initMain() {
 		}
 	}
 
-	/* createWindow({
-		height: 450,
-		width: 800,
-		decorations: 'basic',
-		url: '../dom/index.html'
-	}); */
-
-	/* createWindow({
-		decorations: 'tabbed',
-		width: 1200,
-		height: 800,
-		url: '../dom/index.html'
-	});
-
-	createWindow({
-		decorations: 'tab',
-		width: 800,
-		height: 800,
-		url: '../dom/index.html'
-	}); */
-
-	/* createWindow({
-		height: 800,
-		width: 200,
-		decorations: 'undecorated',
-		url: '../dom/index.html',
-		x: 10,
-		y: 10
-	}); */
-
-	/* createWindow({
-		height: 450,
-		width: 800,
-		decorations: 'tool',
-		url: '../dom/index.html'
-	}); */
+	launchProjectManager();
 
 	refreshPluginTable();
-	createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
+	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
+}
+
+function launchProjectManager() {
+	createWindow({
+		decorations: 'tool',
+		height: 450,
+		width: 800,
+		url: '../dom/editor/ProjectManager.html',
+		windowTitle: 'Project Manager'
+	});
 }
 
 app.on('ready', () => {
