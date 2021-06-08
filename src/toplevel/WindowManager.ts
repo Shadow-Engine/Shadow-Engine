@@ -14,6 +14,7 @@ export interface WindowOptions {
 	url: string;
 	onTop?: boolean;
 	ipcData?: string[]; // formatted like so: ["thisIsTheChannel:ThisIsTheContent", "thisIsTheChannel:ThisIsTheContent"]
+	windowTitle?: string;
 }
 
 //A Basic type decoration is just a window that will follow useNativeTitlebar rules
@@ -53,7 +54,8 @@ export function createWindow(settings: WindowOptions) {
 			window.webContents.on('did-finish-load', () => {
 				// Send settings data to the window so it knows how to handle the current situation
 				window.webContents.send('windowConstructionOptions', {
-					useNativeTitlebar: useNativeTitlebar
+					useNativeTitlebar: useNativeTitlebar,
+					windowTitle: settings.windowTitle ? settings.windowTitle : '' // If == undefined send an empty string
 				});
 			});
 
@@ -167,7 +169,8 @@ export function createWindow(settings: WindowOptions) {
 			window.webContents.on('did-finish-load', () => {
 				// Send settings data to the window so it knows how to handle the current situation
 				window.webContents.send('windowConstructionOptions', {
-					useNativeTitlebar: useNativeTitlebar
+					useNativeTitlebar: useNativeTitlebar,
+					windowTitle: settings.windowTitle ? settings.windowTitle : '' // If == undefined send an empty string
 				});
 			});
 

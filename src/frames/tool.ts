@@ -7,6 +7,10 @@ window.onload = function () {
 		if (constructionOptions.useNativeTitlebar) {
 			document.getElementById('titlebar').style.display = 'none';
 		}
+
+		document.title = constructionOptions.windowTitle;
+		document.getElementById('windowtitle').innerText =
+			constructionOptions.windowTitle;
 	});
 
 	if (process.platform == 'darwin') {

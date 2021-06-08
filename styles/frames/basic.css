@@ -8,6 +8,12 @@
 	-webkit-app-region: drag;
 }
 
+.grabbar span {
+	color: #fff;
+	font-family: 'Montserrat';
+	margin-left: 5px;
+}
+
 .resizebar {
 	position: fixed;
 	top: 0px;
