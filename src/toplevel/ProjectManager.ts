@@ -1,5 +1,5 @@
-import { lstatSync, readdirSync } from "original-fs";
-import { getShadowEngineDataDir } from "./UtilitiesManager";
+import { lstatSync, readdirSync } from 'original-fs';
+import { getShadowEngineDataDir } from './UtilitiesManager';
 
 export function createProject() {}
 
@@ -9,10 +9,10 @@ export function createProject() {}
 export function getProjects(): string[] {
 	let sddr: string = getShadowEngineDataDir();
 
-	let files: string[] = readdirSync(sddr + "/projects");
+	let files: string[] = readdirSync(sddr + '/projects');
 	let directories: string[] = [];
-	for(let i:number = 0; i < files.length; i++) {
-		if (lstatSync(`${sddr}/projects/${files[i]}`).isDirectory() {
+	for (let i: number = 0; i < files.length; i++) {
+		if (lstatSync(`${sddr}/projects/${files[i]}`).isDirectory()) {
 			directories.push(files[i]);
 		}
 	}
