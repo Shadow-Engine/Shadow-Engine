@@ -8,6 +8,7 @@ import { lstatSync } from 'fs';
 import { ipcRenderer } from 'electron';
 import * as isRenderer from 'is-electron-renderer';
 import { createErrorPopupFromMAIN } from '../main';
+import * as Product from '../../product.json';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -74,4 +75,8 @@ export function getLineEnding(fileContent: string): string {
 // Returns boolean
 export function isDirectory(path: string): boolean {
 	return lstatSync(path).isDirectory();
+}
+
+export function getEngineVersion(): string {
+	return `${Product.ProductVersionMajor}.${Product.ProductVersionMinor}.${Product.ProductVersionPatch}`;
 }
