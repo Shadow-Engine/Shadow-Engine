@@ -1,7 +1,30 @@
-import { lstatSync, readdirSync } from 'original-fs';
-import { getShadowEngineDataDir } from './UtilitiesManager';
+import { existsSync, lstatSync, mkdirSync, readdirSync } from 'original-fs';
+import { modConfigFile } from './ConfigurationManager';
+import { assertMacroPath } from './PathManager';
+import { getEngineVersion, getShadowEngineDataDir } from './UtilitiesManager';
 
-export function createProject() {}
+type languages = 'JavaScript' | 'TypeScript';
+
+// Create a new project, throws error if project already exists.
+export function createProject(name: string, language: languages) {
+	let sddr: string = getShadowEngineDataDir();
+	if (doesProjectExist(name)) {
+		throw new Error('ERR: Project named: ' + name + ' already exists');
+	} else {
+		mkdirSync(`${sddr}/projects/${name}`); // Create the container dir
+		let projConfigPath: string = `#sddr/projects/${name}/project.sec`;
+		assertMacroPath(projConfigPath);
+		modConfigFile(projConfigPath, 'name', name);
+		modConfigFile(projConfigPath, 'language', language);
+		modConfigFile(projConfigPath, 'engine-version', getEngineVersion());
+		modConfigFile(projConfigPath, 'default-scene', 'Default.Scene');
+	}
+}
+
+// Checks if a project exists and returns a boolean
+export function doesProjectExist(name: string): boolean {
+	return existsSync(`${getShadowEngineDataDir()}/projects/${name}`);
+}
 
 // Returns a string array with the folder names of all projects in the sddr/projects folder.
 // NOTE: This should probably be updated in the future to return more properties about the
