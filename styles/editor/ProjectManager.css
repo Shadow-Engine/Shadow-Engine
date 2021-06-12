@@ -1,6 +1,6 @@
-#newproject {
+#newprojectbtn {
 	position: fixed;
-	bottom: 35px;
+	bottom: 10px;
 	right: 10px;
 	font-size: 30px;
 	background: transparent;
@@ -13,8 +13,20 @@
 	align-items: center;
 	justify-content: center;
 	color: #fff;
+	transition: 0.2s ease-in-out;
 }
 
-#newproject:hover {
+#newprojectbtn:hover {
 	background: #ffffff50;
+}
+
+.new-project-section {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	background: #424242;
+	height: 100%;
+	width: 100%;
+	clip-path: circle(0% at 100% 100%);
+	transition: 0.7s ease-in-out;
 }
