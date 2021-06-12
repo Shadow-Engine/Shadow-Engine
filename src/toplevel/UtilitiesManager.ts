@@ -8,7 +8,7 @@ import { lstatSync } from 'fs';
 import { ipcRenderer } from 'electron';
 import * as isRenderer from 'is-electron-renderer';
 import { createErrorPopupFromMAIN } from '../main';
-import * as Product from '../../product.json';
+import * as Product from '../product.json';
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;

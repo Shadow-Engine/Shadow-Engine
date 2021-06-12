@@ -76,6 +76,15 @@ const globalMenuTemplate: object[] = [
 				click() {
 					BrowserWindow.getFocusedWindow().reload();
 				}
+			},
+			{
+				label: 'Reload Child',
+				accelerator: 'CmdOrCtrl+Shift+R',
+				click() {
+					BrowserWindow.getFocusedWindow()
+						.getBrowserView()
+						.webContents.reload();
+				}
 			}
 		]
 	}

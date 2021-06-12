@@ -42,6 +42,7 @@ export function createWindow(settings: WindowOptions) {
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
 				backgroundColor: '#222222',
+				autoHideMenuBar: true,
 				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
 				trafficLightPosition: { x: 5, y: 5 }
 			});
@@ -113,7 +114,8 @@ export function createWindow(settings: WindowOptions) {
 				minimizable: false,
 				maximizable: false,
 				skipTaskbar: true,
-				backgroundColor: '#222222'
+				backgroundColor: '#222222',
+				autoHideMenuBar: true
 			});
 
 			//TODO: Support newer IPC data in other decoration types
@@ -157,6 +159,7 @@ export function createWindow(settings: WindowOptions) {
 				minimizable: false,
 				maximizable: false,
 				backgroundColor: '#222222',
+				autoHideMenuBar: true,
 				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
 				trafficLightPosition: { x: 5, y: 5 }
 			});
@@ -224,6 +227,7 @@ export function createWindow(settings: WindowOptions) {
 				minHeight: 100,
 				alwaysOnTop: settings.onTop,
 				backgroundColor: '#222222',
+				autoHideMenuBar: true,
 				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
 				trafficLightPosition: { x: 5, y: 5 }
 			});
@@ -266,6 +270,7 @@ export function createWindow(settings: WindowOptions) {
 				maximizable: false,
 				minimizable: false,
 				resizable: true,
+				autoHideMenuBar: true,
 				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
 				trafficLightPosition: { x: 5, y: 5 }
 			});
