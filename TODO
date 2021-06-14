@@ -1,5 +1,7 @@
 TODO FOR SHADOW ENGINE
 
+	- Implementing Deno for the plugin system? It's got built in permissions, native TypeScript support, ships as a single executable, WebSockets Supported.
+
 	- Finish Popups (add button support similar to electron)
 	- Finish lockdownPlugins function and the rest of the plugins permission system
 

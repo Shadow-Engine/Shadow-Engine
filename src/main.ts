@@ -10,9 +10,12 @@ import electronIsDev = require('electron-is-dev');
 import {
 	initializePluginAuthentication,
 	refreshPluginTable,
-	repoPluginInstall
+	repoPluginInstall,
+	startPluginHost
 } from './toplevel/PluginManager';
 import { createErrorPopup } from './toplevel/UtilitiesManager';
+
+function noop() {}
 
 const globalMenuTemplate: object[] = [
 	{
@@ -108,9 +111,11 @@ function initMain() {
 		}
 	}
 
+	startPluginHost();
+
 	launchProjectManager();
 
-	refreshPluginTable();
+	refreshPluginTable(noop);
 	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
