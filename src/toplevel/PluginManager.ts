@@ -28,63 +28,42 @@ export function initializePluginAuthentication(): void {
 	modConfigFile(path, 'token', v4());
 }
 
-// This array stores all the loaded plugins and their configuations, read more at
-// the refreshPluginTable function
-export let pluginTable: object[] = [];
-
-interface PluginTableCallback {
-	(pluginTable: string[]): void;
+interface Plugin {
+	id: string;
+	pretty: string;
+	version: string;
+	copyright: string;
+	author: string;
+	launchscript: string;
 }
 
 // Should be run after uninstall of a plugin, install of a plugin, and launch of Shadow.
-// Creates an array of a plugins configuation such as it's id and permissions. This is so
+// Returns an array of a plugins configuation such as it's id and permissions. This is so
 // that when a plugin calls a Shadow API, the engine can verify it has permission to do so.
-// callback string[] of valid plugins
-// NOTE: I hate this function
-export function refreshPluginTable(callback: PluginTableCallback) {
+// NOTE: I made this function a lot better :)
+export function getPluginTable(): Plugin[] {
 	let sddr: string = getShadowEngineDataDir(); // store here so we're not calling this function a bunch
-	let validPlugins: string[] = [];
-	{
-		//Get plugin folders. For each folder in #sddr/plugins check if it has a plug.sec file
-		readdir(`${sddr}/plugins`, (err, files) => {
-			//TODO: This should probably be synchronous
-			if (err) throw err;
-			// console.log(files);
-			for (let i: number = 0; i < files.length; i++) {
-				if (isDirectory(`${sddr}/plugins/${files[i]}`)) {
-					// This path is a directory so we can look into it to see if theres a plug.sec file
-					if (existsSync(`${sddr}/plugins/${files[i]}/plug.sec`)) {
-						//Plug.sec exists so add the folder name to an array of valid plugins
-						validPlugins.push(files[i]);
-					}
-				}
-			}
+	let validPlugins: string[] = getPluginArray();
 
-			createPluginTable();
+	let newPluginTable: Plugin[] = [];
+
+	for (let i: number = 0; i < validPlugins.length; i++) {
+		let pluginConfigPath: string =
+			'#sddr/plugins/' + validPlugins[i] + '/plug.sec';
+		assertMacroPath(pluginConfigPath);
+
+		newPluginTable.push({
+			id: readConfigFile(pluginConfigPath, 'id'),
+			pretty: readConfigFile(pluginConfigPath, 'pretty'),
+			version: readConfigFile(pluginConfigPath, 'version'),
+			copyright: readConfigFile(pluginConfigPath, 'copyright'),
+			author: readConfigFile(pluginConfigPath, 'author'),
+			launchscript: readConfigFile(pluginConfigPath, 'launchscript')
 		});
 	}
 
-	// AKA Part 2
-	function createPluginTable() {
-		// console.log(validPlugins);
-		callback(validPlugins);
-
-		let newPluginTable: object[] = [];
-
-		//Loop through all valid plugins
-		for (let i: number = 0; i < validPlugins.length; i++) {
-			let path: string = `#sddr/plugins/${validPlugins[i]}/plug.sec`;
-			assertMacroPath(path);
-
-			newPluginTable.push({
-				id: readConfigFile(path, 'id'),
-				pretty: readConfigFile(path, 'pretty'),
-				version: readConfigFile(path, 'version'),
-				copyright: readConfigFile(path, 'copyright'),
-				author: readConfigFile(path, 'author')
-			});
-		}
-	}
+	// return final table
+	return newPluginTable;
 }
 
 // Returns an array of plugins in the #sddr/plugins folder
@@ -129,7 +108,7 @@ export function startPluginHost() {
 	getPort(function (err, port) {
 		//Async function that looks for an open port
 		if (err) throw err;
-		console.log(`PluginHost Listening on port ${port}`);
+		logAsPluginHost(`Listening on port ${port}`);
 		pluginHostPort = port;
 		pluginHostServer(port);
 	});

@@ -2,20 +2,22 @@ import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { openProcessManager } from './scripts/ProcessManager';
 import {
 	getEngineConfig,
-	initializeConfig
+	initializeConfig,
+	readConfig
 } from './toplevel/ConfigurationManager';
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
 import { resolve as pathresolve } from 'path';
 import electronIsDev = require('electron-is-dev');
 import {
 	initializePluginAuthentication,
-	refreshPluginTable,
+	getPluginTable,
 	repoPluginInstall,
 	startPluginHost
 } from './toplevel/PluginManager';
 import { createErrorPopup } from './toplevel/UtilitiesManager';
-
-function noop() {}
+import * as Product from './product.json';
+import * as fetch from 'node-fetch';
+import got = require('got');
 
 const globalMenuTemplate: object[] = [
 	{
@@ -115,7 +117,7 @@ function initMain() {
 
 	launchProjectManager();
 
-	refreshPluginTable(noop);
+	console.log(getPluginTable());
 	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
@@ -198,6 +200,47 @@ ipcMain.on('WindowManager.minimize', () => {
 	//you're not focused on the window, the act of clicking focuses it,
 	//unless the window's focusable value is false
 	BrowserWindow.getFocusedWindow().minimize();
+});
+
+// Plugin Installer
+
+ipcMain.on('PluginInstall.fetchPluginConfig', (event, packageId) => {
+	let site: string = Product.ProductWebsite;
+
+	console.log('AOFDJOifjosidjf');
+
+	(async () => {
+		try {
+			const response = await got(site + '/x/' + packageId + '/plug.sec');
+			event.sender.send(
+				'Main.pluginConfigReturn',
+				readConfig(response.body, 'pretty'),
+				readConfig(response.body, 'version'),
+				readConfig(response.body, 'author')
+			);
+		} catch (error) {
+			console.log(error.response.body);
+		}
+	})();
+
+	//@/ts-expect-error
+	/* fetch(site + '/x/' + packageId + '/plug.sec').then(async (response: any) => {
+		if (!response.ok) {
+			throw new Error('ERR: HTTP Error ' + response.statusText);
+		}
+		let data = response.text();
+		console.log(data);
+		event.sender.send('Main.pluginConfigReturn', data);
+	}); */
+
+	//@/ts-expect-error
+	/* fetch(site + '/x/' + packageId + '/icon.png').then(async (response: any) => {
+		if (!response.ok) {
+			throw new Error('ERR: HTTP Error ' + response.statusText);
+		}
+		let data = response.blob();
+		event.sender.send('Main.pluginIconReturn', URL.createObjectURL(data));
+	}); */
 });
 
 app.removeAsDefaultProtocolClient('shadow-engine');

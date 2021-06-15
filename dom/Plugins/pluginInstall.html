@@ -9,12 +9,16 @@
 		<link rel="stylesheet" href="../../styles/Plugins/pluginInstall.css" />
 	</head>
 	<body>
-		<div class="icon-col">
-			<img src="../../media/loading.png" height="90" width="90" />
+		<div class="icon-col" id="icon-col">
+			<!-- <img src="../../media/loading.png" height="90" width="90" /> -->
 		</div>
 		<div class="content-col">
-			<h1>Resolving Plugin Name...</h1>
+			<h1 id="name">Resolving Plugin Name...</h1>
+			<p id="verAndAuthor">Version ?.?.? By ???????</p>
 			<code id="visiblePluginId">Waiting for Plugin ID...</code>
+			<br />
+			<br />
+			<button id="install">Install</button>
 		</div>
 
 		<script>

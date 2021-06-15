@@ -136,11 +136,26 @@ export function readConfigFile(macroPath: MacroPath, setting: string): string {
 	for (let i: number = 0; i < split.length; i++) {
 		if (split[i].split(':')[0] == setting) {
 			// Some string manipulation to grab the value
-			return split[i].substr(setting.length + 1);
+			return split[i].substr(setting.length + 1).replace('\r', ''); // and get rid of those nasty carriage returns if the file is CRLF
 		}
 	}
 
 	//Return null if value isn't found
+	return null;
+}
+
+// Same as readConfigFile but does not read from file, only the input
+// Returns result as string
+export function readConfig(config: string, setting: string): string {
+	let split: string[] = config.split('\n');
+
+	for (let i: number = 0; i < split.length; i++) {
+		if (split[i].split(':')[0] == setting) {
+			// Some string manipulation to grab the value
+			return split[i].substr(setting.length + 1).replace('\r', ''); // and get rid of those nasty carriage returns if the input is CRLF
+		}
+	}
+
 	return null;
 }
 

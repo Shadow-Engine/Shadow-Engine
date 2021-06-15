@@ -3,5 +3,6 @@
 	"ProductName": "Shadow Engine",
 	"ProductVersionMajor": 0,
 	"ProductVersionMinor": 1,
-	"ProductVersionPatch": 0
+	"ProductVersionPatch": 0,
+	"ProductWebsite": "http://localhost:8000"
 }

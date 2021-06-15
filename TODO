@@ -9,14 +9,24 @@ TODO FOR SHADOW ENGINE
 	- Fix require is not defined on pluginInstaller -- DONE
 
 
-Possible plugin permissions:
+Shadow API: (Does not require permission)
 
-	shadow.downloadManager
-	node.fs
-	node.crypto
-	node.child_process
-	node.dns
-	node.http
-	node.https
-	node.os
-	node.path
+	shadow.config.modConfigFile		(allows plugin to modify config file as long as it has proper write permissions)
+	shadow.config.readConfigFile	(allows plugin to read config file as long as it has proper read permissions)
+	shadow.config.getEngineConfig	(allows plugin to read engine configuration regardless if it has read permissions or not)
+	
+	shadow.utils.getEngineVersion	(You can guess this one)
+	shadow.utils.getLineEnding		(Gets line ending for input)
+	shaodw.utils.createErrorPopup	(You can guess this one)
+
+Possible plugin permissions:
+	
+	shadow.downloadManager			(uses electron-download-manager)
+
+	deno.danger.all (DANGER: THIS BYPASSES E V E R Y T H I N G AND EVEN ALLOWS FOR PERMISSIONS THAT SHADOW DOESN'T SUPPORT LIKE DENO PLUGINS)
+	deno.danger.run (DANGER: This allows the plugin to spawn subprocesses which can bypass Shadow's restrictions)
+	deno.env		(Environment variable access)
+	deno.hrtime		(High-Resolution Time Measurement, can be used for fingerprinting according to the deno manual 0_o )
+	deno.net.all	(Allow all network access, see allowedDomains in plug.sec for specific network access)
+	deno.read.all	(Allow all filesystem read access, see allowedReadPaths in plug.sec for specific path read access)
+	deno.write.all	(Allow all filesystem write access, see allowedWritePaths in plug.sec for specific path write access)

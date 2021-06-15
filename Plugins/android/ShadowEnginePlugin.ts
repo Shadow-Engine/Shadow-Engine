@@ -30,3 +30,8 @@ export function authenticate(websocket: WebSocket) {
 		})
 	);
 }
+
+export let ShadowAPI: object = {
+	config: {},
+	utils: {}
+};
