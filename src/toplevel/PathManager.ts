@@ -64,13 +64,14 @@ export function assertMacroPath(input: string): asserts input is MacroPath {
 	}
 }
 
-// Checks for valid filenames that everyone agrees with (Windows, Linux, Shadow, FileSystems)
+// Checks for valid filenames that everyone agrees with (Windows, Linux, Shadow, File Systems)
 // Returns the boolean true if the name is valid, returns a string with the error for the
 // user to fix on invalid names
 export function fileNameChecker(filename: string): boolean | string {
 	if (filename == '') {
 		return "Name can't be blank";
 	} else {
+		// ELSE IF TOWER OF DOOM
 		if (filename == 'CON') {
 			return 'CON is a name reserved by Windows';
 		} else if (filename == 'PRN') {
@@ -141,8 +142,8 @@ export function fileNameChecker(filename: string): boolean | string {
 				return 'Windows does not allow a dot at the end';
 			} else {
 				//MORE CHECKS
-				//This time, with regualar expressions
-				var charactorsNotAllowed = /[/\\<>:"|?* ]/;
+				//This time, with a regualar expression
+				let charactorsNotAllowed = /[/\\<>:"|?* ]/;
 				if (filename.match(charactorsNotAllowed)) {
 					return 'It is not allowed to have the following characters: / \\ < > : " | ? * space';
 				} else {

@@ -16,9 +16,10 @@ window.onload = function () {
 				const response = await got(
 					Product.ProductWebsite + '/x/' + id + '/icon.png'
 				);
-				var imageElement = document.createElement('img');
+				let imageElement = document.createElement('img');
 				imageElement.height = 90;
 				imageElement.width = 90;
+				console.log(response.body);
 				imageElement.src = URL.createObjectURL(response.body);
 				document.getElementById('icon-col').appendChild(imageElement);
 			} catch (error) {

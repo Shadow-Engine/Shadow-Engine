@@ -12,46 +12,39 @@ import { getShadowEngineDataDir } from './UtilitiesManager';
 import { parse, stringify } from 'json5';
 import { engineConfig, engineConfigInterface } from '../res/engine-config';
 
-/* interface configInitalizationArrayInterface {
-	file: object {
-		type: string;
-	}
-}; */
-
-let shadowDataDir: string = getShadowEngineDataDir(); // String to use to prevent tons of function calls
-let configInitalizationArray = [
-	{
-		type: 'folder', // This is the inital Shadow Engine folder
-		location: shadowDataDir
-	},
-	{
-		type: 'folder',
-		location: shadowDataDir + '/engine-data'
-	},
-	{
-		type: 'folder',
-		location: shadowDataDir + '/projects'
-	},
-	{
-		type: 'folder',
-		location: shadowDataDir + '/plugins'
-	},
-	{
-		type: 'file',
-		location: shadowDataDir + '/engine-data/config.json5',
-		data: stringify(engineConfig, null, 4)
-	},
-	{
-		type: 'file',
-		location: shadowDataDir + '/engine-data/project.sec',
-		data: 'project:none'
-	}
-];
-
 /*
 	Initailization function that creates directories and config files for Shadow to use.
 */
 export function initializeConfig() {
+	let shadowDataDir: string = getShadowEngineDataDir(); // String to use to prevent tons of function calls
+	let configInitalizationArray = [
+		{
+			type: 'folder', // This is the inital Shadow Engine folder
+			location: shadowDataDir
+		},
+		{
+			type: 'folder',
+			location: shadowDataDir + '/engine-data'
+		},
+		{
+			type: 'folder',
+			location: shadowDataDir + '/projects'
+		},
+		{
+			type: 'folder',
+			location: shadowDataDir + '/plugins'
+		},
+		{
+			type: 'file',
+			location: shadowDataDir + '/engine-data/config.json5',
+			data: stringify(engineConfig, null, 4)
+		},
+		{
+			type: 'file',
+			location: shadowDataDir + '/engine-data/project.sec',
+			data: 'project:none'
+		}
+	];
 	if (existsSync(shadowDataDir)) {
 		return;
 	}
