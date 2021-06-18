@@ -1,6 +1,6 @@
 // THIS IS A RENDERER SCRIPT
 
-import { fileNameChecker } from '../toplevel/PathManager';
+// import { fileNameChecker } from '../toplevel/PathManager';
 
 let newProjectSectionOpen: boolean = false;
 document.getElementById('newprojectbtn').addEventListener('click', function () {
@@ -23,10 +23,10 @@ let vaildProjectName: boolean = false; // always starts false because name is bl
 
 setInterval(() => {
 	// Check for errors in project name
-	if (fileNameChecker(projectName) !== true) {
+	if (/* fileNameChecker(projectName) !==  */ true) {
 		//Errors in name, tell user.
-		//@ts-expect-error
-		document.getElementById('err').innerText = fileNameChecker(projectName);
+		//@/ts-expect-error
+		// document.getElementById('err').innerText = fileNameChecker(projectName);
 		vaildProjectName = false;
 	} else {
 		document.getElementById('err').innerText = '';

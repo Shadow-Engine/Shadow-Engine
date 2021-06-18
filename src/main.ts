@@ -16,8 +16,8 @@ import {
 } from './toplevel/PluginManager';
 import { createErrorPopup } from './toplevel/UtilitiesManager';
 import * as Product from './product.json';
-import * as fetch from 'node-fetch';
-import got = require('got');
+import fetch from 'node-fetch';
+// import { DownloadManager } from 'electron-download-manager';
 
 const globalMenuTemplate: object[] = [
 	{
@@ -113,7 +113,7 @@ function initMain() {
 		}
 	}
 
-	startPluginHost();
+	// startPluginHost();
 
 	launchProjectManager();
 
@@ -207,40 +207,21 @@ ipcMain.on('WindowManager.minimize', () => {
 ipcMain.on('PluginInstall.fetchPluginConfig', (event, packageId) => {
 	let site: string = Product.ProductWebsite;
 
-	console.log('AOFDJOifjosidjf');
+	console.log('Fetching Plugin Data...');
 
-	(async () => {
-		try {
-			const response = await got(site + '/x/' + packageId + '/plug.sec');
-			event.sender.send(
-				'Main.pluginConfigReturn',
-				readConfig(response.body, 'pretty'),
-				readConfig(response.body, 'version'),
-				readConfig(response.body, 'author')
-			);
-		} catch (error) {
-			console.log(error.response.body);
-		}
-	})();
-
-	//@/ts-expect-error
-	/* fetch(site + '/x/' + packageId + '/plug.sec').then(async (response: any) => {
+	fetch(site + '/x/' + packageId + '/plug.sec').then(async (response: any) => {
 		if (!response.ok) {
 			throw new Error('ERR: HTTP Error ' + response.statusText);
 		}
-		let data = response.text();
-		console.log(data);
-		event.sender.send('Main.pluginConfigReturn', data);
-	}); */
-
-	//@/ts-expect-error
-	/* fetch(site + '/x/' + packageId + '/icon.png').then(async (response: any) => {
-		if (!response.ok) {
-			throw new Error('ERR: HTTP Error ' + response.statusText);
-		}
-		let data = response.blob();
-		event.sender.send('Main.pluginIconReturn', URL.createObjectURL(data));
-	}); */
+		let data = await response.text();
+		event.sender.send(
+			'Main.pluginConfigReturn',
+			readConfig(data, 'pretty'),
+			readConfig(data, 'version'),
+			readConfig(data, 'author')
+		);
+		console.log('Sending Meta-Data...');
+	});
 });
 
 app.removeAsDefaultProtocolClient('shadow-engine');

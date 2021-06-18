@@ -1,8 +1,9 @@
 {
-	"ProductID": "tk.a77zsite.shadow",
+	"ProductID": "dev.77z.shadow",
 	"ProductName": "Shadow Engine",
 	"ProductVersionMajor": 0,
 	"ProductVersionMinor": 1,
 	"ProductVersionPatch": 0,
-	"ProductWebsite": "http://localhost:8000"
+	"ProductWebsite": "http://localhost:8080",
+	"ProductWebsite_DEV": "https://shadow.77z.dev"
 }

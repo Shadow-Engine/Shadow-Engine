@@ -8,6 +8,7 @@ import { existsSync, readdirSync } from 'original-fs';
 import { getPort } from 'portfinder';
 import { Server } from 'ws';
 import * as colors from 'colors';
+import { exec } from 'child_process';
 
 export function repoPluginInstall(inputUri: string) {
 	createWindow({
@@ -120,6 +121,7 @@ export function startPluginHost() {
 			let plugins: string[] = getPluginArray();
 			for (let i: number = 0; i < plugins.length; i++) {
 				logAsPluginHost('Loading Plugin ' + plugins[i]);
+				// exec("deno run --allow-net=localhost", () => {});
 			}
 		});
 
