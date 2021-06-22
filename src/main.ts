@@ -1,4 +1,11 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
+import {
+	app,
+	BrowserView,
+	BrowserWindow,
+	dialog,
+	ipcMain,
+	Menu
+} from 'electron';
 import { openProcessManager } from './scripts/ProcessManager';
 import {
 	getEngineConfig,
@@ -18,6 +25,17 @@ import { createErrorPopup } from './toplevel/UtilitiesManager';
 import * as Product from './product.json';
 import fetch from 'node-fetch';
 // import { DownloadManager } from 'electron-download-manager';
+
+//Check launch arguments to see if debugger should enable,
+//yes we also have an argument check in the initMain function
+console.log(process.argv);
+for (let i: number = 0; i < process.argv.length; i++) {
+	console.log(process.argv[i]);
+	if (process.argv[i].startsWith('debug')) {
+		app.commandLine.appendSwitch('remote-debugging-port', '9222');
+		console.log('Shadow Engine Remote Debugger started on port 9222');
+	}
+}
 
 const globalMenuTemplate: object[] = [
 	{
@@ -223,6 +241,52 @@ ipcMain.on('PluginInstall.fetchPluginConfig', (event, packageId) => {
 		console.log('Sending Meta-Data...');
 	});
 });
+
+/* app.on('browser-window-created', function () {
+	console.log('NEW BROWSER WINDOW!');
+	refreshContextMenus();
+}); */
+
+/* app.on('web-contents-created', function () {
+	console.log('WEBCONTENTS CREATED');
+	refreshContextMenus();
+}); */
+
+// Function to refresh default context menus on webContents
+// for things like right-click copy/paste menus.
+// This code is nice but it's kinda buggy.
+/* function refreshContextMenus() {
+	let allWindows: BrowserWindow[] = BrowserWindow.getAllWindows();
+	for (let i: number = 0; i < allWindows.length; i++) {
+		allWindows[i].webContents.on('context-menu', (e, props) =>
+			createMenuListener(e, props, allWindows[i])
+		);
+
+		let allBrowserViews: BrowserView[] = allWindows[i].getBrowserViews();
+		for (let j: number = 0; j < allBrowserViews.length; j++) {
+			allBrowserViews[j].webContents.on('context-menu', (e, props) =>
+				createMenuListener(e, props, allWindows[i])
+			);
+		}
+	}
+
+	function createMenuListener(e: any, props: any, window: BrowserWindow) {
+		const EditTextMenu = Menu.buildFromTemplate([
+			{ role: 'cut' },
+			{ role: 'copy' },
+			{ role: 'paste' },
+			{ type: 'separator' },
+			{ role: 'undo' },
+			{ role: 'redo' }
+		]);
+		const { inputFieldType } = props;
+		if (inputFieldType === 'plainText') {
+			EditTextMenu.popup({
+				window: window
+			});
+		}
+	}
+} */
 
 app.removeAsDefaultProtocolClient('shadow-engine');
 app.setAsDefaultProtocolClient('shadow-engine');
