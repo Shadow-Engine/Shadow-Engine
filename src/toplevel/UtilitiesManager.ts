@@ -7,9 +7,9 @@ import { exec } from 'child_process';
 import { lstatSync } from 'fs';
 import { ipcRenderer } from 'electron';
 import * as isRenderer from 'is-electron-renderer';
-import { createErrorPopupFromMAIN } from '../main';
 import * as Product from '../product.json';
 import * as colors from 'colors';
+/* import { createErrorPopupFromMAIN } from '../main'; */
 
 export function getShadowEngineDataDir(): string {
 	let directory: string;
@@ -45,7 +45,8 @@ export function createErrorPopup(title: string, content: string) {
 	if (isRenderer) {
 		ipcRenderer.send('util.createErrorPopup', title, content);
 	} else {
-		createErrorPopupFromMAIN(title, content);
+		/* import { createErrorPopupFromMAIN } from '../main'; */
+		/* createErrorPopupFromMAIN(title, content); */
 	}
 }
 

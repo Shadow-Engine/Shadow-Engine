@@ -242,6 +242,16 @@ ipcMain.on('PluginInstall.fetchPluginConfig', (event, packageId) => {
 	});
 });
 
+ipcMain.on('createEditorWindow', (_event, projectName) => {
+	createWindow({
+		height: 900,
+		width: 1500,
+		decorations: 'tabbed',
+		windowTitle: 'Shadow Editor',
+		url: '../dom/editor/editor.html'
+	});
+});
+
 /* app.on('browser-window-created', function () {
 	console.log('NEW BROWSER WINDOW!');
 	refreshContextMenus();
