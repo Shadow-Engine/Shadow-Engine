@@ -1,7 +1,11 @@
 // THIS IS A RENDERER SCRIPT
 
 import { fileNameChecker } from '../toplevel/PathManager';
-import { createProject, openProject } from '../toplevel/ProjectManager';
+import {
+	createProject,
+	getProjects,
+	openProject
+} from '../toplevel/ProjectManager';
 
 // import { ahh, fileNameChecker } from '../toplevel/PathManager';
 
@@ -60,6 +64,20 @@ document
 			}, 500);
 		}
 	});
+
+{
+	//Initialize project list
+	var projects = getProjects();
+	for (let i: number = 0; i < projects.length; i++) {
+		let projectElement: HTMLLIElement = document.createElement('li');
+		projectElement.addEventListener('dblclick', function () {
+			openProject(projects[i]);
+		});
+		projectElement.innerText = projects[i];
+		projectElement.tabIndex = 0;
+		document.getElementById('projects').appendChild(projectElement);
+	}
+}
 
 /* window.onload = function () {
 	openProject('abc');

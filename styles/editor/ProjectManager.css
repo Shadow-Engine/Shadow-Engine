@@ -78,3 +78,17 @@
 		transform: translate(1px, -2px) rotate(-1deg);
 	}
 }
+
+#projects {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#projects li {
+	cursor: pointer;
+}
+
+#projects li:focus {
+	background: #ff4500;
+}
