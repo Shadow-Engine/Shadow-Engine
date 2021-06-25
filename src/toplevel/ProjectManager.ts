@@ -1,8 +1,15 @@
 import { ipcRenderer } from 'electron';
-import { existsSync, lstatSync, mkdirSync, readdirSync } from 'original-fs';
+import {
+	existsSync,
+	lstatSync,
+	mkdirSync,
+	readdirSync,
+	writeFileSync
+} from 'original-fs';
 import { modConfigFile } from './ConfigurationManager';
 import { assertMacroPath } from './PathManager';
 import { getEngineVersion, getShadowEngineDataDir } from './UtilitiesManager';
+import { logo } from '../res/shadow-logo-base64';
 
 type languages = 'JavaScript' | 'TypeScript';
 
@@ -22,6 +29,9 @@ export function createProject(name: string, language: languages) {
 		mkdirSync(`${sddr}/projects/${name}/Assets`);
 		mkdirSync(`${sddr}/projects/${name}/Source`);
 		mkdirSync(`${sddr}/projects/${name}/Bin`);
+
+		let imageBuffer = Buffer.from(logo, 'base64');
+		writeFileSync(`${sddr}/projects/${name}/cover.png`, imageBuffer);
 	}
 }
 
