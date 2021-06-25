@@ -10,7 +10,42 @@
 		<link rel="stylesheet" href="../../styles/editor/ProjectManager.css" />
 	</head>
 	<body>
-		<ul id="projects"></ul>
+		<!-- <ul id="projects"></ul> -->
+
+		<!-- <div id="projects">
+			<div><img src="../../media/shadow.png" /><span>Project 1</span></div>
+			<div><img src="../../media/shadow.png" /><span>Project 2</span></div>
+			<div><img src="../../media/shadow.png" /><span>Project 3</span></div>
+			<div><img src="../../media/shadow.png" /><span>Project 4</span></div>
+			<div><img src="../../media/shadow.png" /><span>Project 5</span></div>
+		</div> -->
+
+		<div id="projects">
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 1</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 2</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 3</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 4</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 5</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 6</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 7</span>
+			</div>
+			<div tabindex="0">
+				<img src="../../media/shadow.png" /><span>Project 8</span>
+			</div>
+		</div>
 
 		<div class="new-project-section" id="new-project-section">
 			<h1>New Project</h1>
@@ -18,7 +53,7 @@
 			<input type="text" id="projectname" placeholder="Name..." />
 			<button id="project-creation-button">Create Project</button>
 			<p id="err" class="error"></p>
-			<p>Render Engine (Can be changed later)</p>
+			<span>Render Engine (Can be changed later)</span>
 			<select id="rengine">
 				<option value="shadow-render">Shadow Render</option>
 				<option value="opengl-2">OpenGL 2</option>
@@ -28,6 +63,12 @@
 				<option value="dx11">DirectX 11</option>
 				<option value="dx12">DirectX 12</option>
 				<option value="vulkan">Vulkan</option>
+			</select>
+			<br />
+			<span>Language</span>
+			<select id="lang">
+				<option value="ts">TypeScript</option>
+				<option value="js">JavaScript</option>
 			</select>
 		</div>
 

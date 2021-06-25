@@ -79,7 +79,7 @@
 	}
 }
 
-#projects {
+/* #projects {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -91,4 +91,34 @@
 
 #projects li:focus {
 	background: #ff4500;
+} */
+
+#projects {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+
+#projects div {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	width: 150px;
+	height: 150px;
+	justify-content: space-evenly;
+}
+
+#projects div:hover {
+	background: #ffffff50;
+}
+
+#projects div:focus {
+	background: #ff4500;
+}
+
+#projects div img {
+	height: 100px;
+	width: 100px;
 }

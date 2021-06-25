@@ -67,16 +67,16 @@ document
 
 {
 	//Initialize project list
-	var projects = getProjects();
-	for (let i: number = 0; i < projects.length; i++) {
-		let projectElement: HTMLLIElement = document.createElement('li');
-		projectElement.addEventListener('dblclick', function () {
-			openProject(projects[i]);
-		});
-		projectElement.innerText = projects[i];
-		projectElement.tabIndex = 0;
-		document.getElementById('projects').appendChild(projectElement);
-	}
+	// var projects = getProjects();
+	// for (let i: number = 0; i < projects.length; i++) {
+	// 	let projectElement: HTMLLIElement = document.createElement('li');
+	// 	projectElement.addEventListener('dblclick', function () {
+	// 		openProject(projects[i]);
+	// 	});
+	// 	projectElement.innerText = projects[i];
+	// 	projectElement.tabIndex = 0;
+	// 	document.getElementById('projects').appendChild(projectElement);
+	// }
 }
 
 /* window.onload = function () {
