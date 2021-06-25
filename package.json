@@ -25,7 +25,7 @@
 	"dependencies": {
 		"colors": "^1.4.0",
 		"crypto-js": "^4.0.0",
-		"electron": "^13.0.1",
+		"electron": "^13.1.4",
 		"electron-download-manager": "^2.1.2",
 		"electron-is-dev": "^2.0.0",
 		"electron-rebuild": "^1.11.0",
