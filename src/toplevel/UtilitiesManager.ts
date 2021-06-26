@@ -114,5 +114,9 @@ export function createContextMenu(
 	callback: contextMenuCallback
 ): void {
 	// The bulk is handled by the main process
-	ipcRenderer.send('util.internal.createContextMenu', options, callback);
+	ipcRenderer.send(
+		'util.internal.createContextMenu',
+		JSON.stringify(options),
+		callback
+	);
 }

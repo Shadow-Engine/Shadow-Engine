@@ -259,9 +259,10 @@ ipcMain.on('createEditorWindow', (_event, projectName) => {
 
 ipcMain.on(
 	'util.internal.createContextMenu',
-	(_event, options: contextMenuOptions, callback: contentMenuItemOptions) => {
+	(_event, stringoptions: string, callback: contentMenuItemOptions) => {
 		let x: number;
 		let y: number;
+		let options: contextMenuOptions = JSON.parse(stringoptions);
 
 		if (options.screenPositionX && options.screenPositionY) {
 			//Use provided position
