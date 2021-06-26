@@ -39,3 +39,9 @@ const fs = module.constructor._load('fs');
 
 // This function completly bugs out the system, and i like it. No workarounds
 const fs = CoreModule.prototype.require('fs');
+
+const IOUtils = require('./dist/native/IOUtils');
+
+while (true) {
+	console.log('x: ' + IOUtils.getMouseX() + ' y: ' + IOUtils.getMouseY());
+}
