@@ -79,28 +79,6 @@
 	}
 }
 
-/* #projects {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-#projects li {
-	cursor: pointer;
-}
-
-#projects li:focus {
-	background: #ff4500;
-} */
-
-#projects {
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-}
-
 #projects div {
 	display: inline-flex;
 	flex-direction: column;
