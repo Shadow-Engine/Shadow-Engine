@@ -82,3 +82,37 @@ export function isDirectory(path: string): boolean {
 export function getEngineVersion(): string {
 	return `${Product.ProductVersionMajor}.${Product.ProductVersionMinor}.${Product.ProductVersionPatch}`;
 }
+
+// The interface for the callback for the context menu
+// function
+export interface contextMenuCallback {
+	(index: number): void;
+}
+
+// The interface for the options for the context menu
+// function
+export interface contextMenuOptions {
+	screenPositionX?: number; // Absolute position of the context menu, if none, will open at mouse cursor
+	screenPositionY?: number;
+	items: contentMenuItemOptions[]; // Items within the context menu
+}
+
+export interface contentMenuItemOptions {
+	label: string; // Text shown in the item
+	title?: string; // Text shown on hover
+	click?: Function; // Function triggered on click
+	type?: 'text' | 'separator';
+}
+
+// Creates a context menu for the user to interact with
+// and returns the index of whatever item was selected,
+// in a callback, if none was selected and instead the
+// context menu was closed, it would return -1 so you
+// can just check for < 0
+export function createContextMenu(
+	options: contextMenuOptions,
+	callback: contextMenuCallback
+): void {
+	// The bulk is handled by the main process
+	ipcRenderer.send('util.internal.createContextMenu', options, callback);
+}

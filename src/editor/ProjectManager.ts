@@ -1,5 +1,9 @@
 // THIS IS A RENDERER SCRIPT
 
+import {
+	createContextMenu,
+	getShadowEngineDataDir
+} from '../toplevel/UtilitiesManager';
 import { fileNameChecker } from '../toplevel/PathManager';
 import {
 	createProject,
@@ -67,16 +71,58 @@ document
 
 {
 	//Initialize project list
-	// var projects = getProjects();
-	// for (let i: number = 0; i < projects.length; i++) {
-	// 	let projectElement: HTMLLIElement = document.createElement('li');
-	// 	projectElement.addEventListener('dblclick', function () {
-	// 		openProject(projects[i]);
-	// 	});
-	// 	projectElement.innerText = projects[i];
-	// 	projectElement.tabIndex = 0;
-	// 	document.getElementById('projects').appendChild(projectElement);
-	// }
+	var projects = getProjects();
+	let sddr: string = getShadowEngineDataDir();
+	for (let i: number = 0; i < projects.length; i++) {
+		// let projectElement: HTMLLIElement = document.createElement('li');
+		// projectElement.addEventListener('dblclick', function () {
+		// 	openProject(projects[i]);
+		// });
+		// projectElement.innerText = projects[i];
+		// projectElement.tabIndex = 0;
+		// document.getElementById('projects').appendChild(projectElement);
+
+		let projectName: string = projects[i];
+
+		let projectElement: HTMLDivElement = document.createElement('div');
+		let coverImageElement: HTMLImageElement = document.createElement('img');
+		let projectNameElement: HTMLSpanElement = document.createElement('span');
+
+		// Create Events
+		projectElement.addEventListener('dblclick', function () {
+			openProject(projectName);
+		});
+
+		projectElement.addEventListener('contextmenu', function () {
+			console.log('Ctx menu');
+			createContextMenu(
+				{
+					items: [
+						{
+							label: 'Click me',
+							title: 'Hovered'
+						}
+					]
+				},
+				(index) => {}
+			);
+		});
+
+		// Make focusable
+		projectElement.tabIndex = 0;
+
+		// Set Image Properties
+		coverImageElement.src = `${sddr}/projects/${projectName}/cover.png`;
+		coverImageElement.draggable = false;
+
+		// Set Name Properties
+		projectNameElement.innerText = projectName;
+
+		// Build Final Element
+		projectElement.appendChild(coverImageElement);
+		projectElement.appendChild(projectNameElement);
+		document.getElementById('projects').appendChild(projectElement);
+	}
 }
 
 /* window.onload = function () {

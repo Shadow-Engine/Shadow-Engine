@@ -21,9 +21,14 @@ import {
 	repoPluginInstall,
 	startPluginHost
 } from './toplevel/PluginManager';
-import { createErrorPopup } from './toplevel/UtilitiesManager';
+import {
+	contentMenuItemOptions,
+	contextMenuOptions,
+	createErrorPopup
+} from './toplevel/UtilitiesManager';
 import * as Product from './product.json';
 import fetch from 'node-fetch';
+import { getMouseX, getMouseY } from './native/IOUtils';
 // import { DownloadManager } from 'electron-download-manager';
 
 //Check launch arguments to see if debugger should enable,
@@ -251,6 +256,43 @@ ipcMain.on('createEditorWindow', (_event, projectName) => {
 		url: '../dom/editor/editor.html'
 	});
 });
+
+ipcMain.on(
+	'util.internal.createContextMenu',
+	(_event, options: contextMenuOptions, callback: contentMenuItemOptions) => {
+		let x: number;
+		let y: number;
+
+		if (options.screenPositionX && options.screenPositionY) {
+			//Use provided position
+			x = options.screenPositionX;
+			y = options.screenPositionY;
+		} else {
+			//Use mouse cursor position
+			x = getMouseX();
+			y = getMouseY();
+		}
+
+		let contextMenuWindow: BrowserWindow = createWindow({
+			height: options.items.length * 15,
+			width: 300,
+			decorations: 'undecorated',
+			url: '../dom/Popups/context-menu.html',
+			onTop: true,
+			windowTitle: 'Context Menu',
+			x: x,
+			y: y
+		});
+
+		contextMenuWindow.webContents.on('did-finish-load', function () {
+			contextMenuWindow.webContents.send(
+				'main.createContextMenu',
+				options,
+				callback
+			);
+		});
+	}
+);
 
 /* app.on('browser-window-created', function () {
 	console.log('NEW BROWSER WINDOW!');

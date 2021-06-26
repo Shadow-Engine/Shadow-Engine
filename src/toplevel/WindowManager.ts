@@ -23,7 +23,7 @@ export interface WindowOptions {
 //A tool window is a window that follows useNativeTitlebar rules, but refuses to be resized, minimized, or maximized
 type windowDecorations = 'basic' | 'undecorated' | 'tabbed' | 'tab' | 'tool';
 
-export function createWindow(settings: WindowOptions) {
+export function createWindow(settings: WindowOptions): BrowserWindow {
 	let useNativeTitlebar: boolean = getEngineConfig().useNativeTitleBar;
 
 	switch (settings.decorations) {
@@ -95,7 +95,7 @@ export function createWindow(settings: WindowOptions) {
 				}
 			});
 
-			break;
+			return window;
 		}
 		case 'undecorated': {
 			let window = new BrowserWindow({
@@ -140,7 +140,7 @@ export function createWindow(settings: WindowOptions) {
 				window = null;
 			});
 
-			break;
+			return window;
 		}
 		case 'tool': {
 			let window = new BrowserWindow({
@@ -211,7 +211,7 @@ export function createWindow(settings: WindowOptions) {
 				}
 			});
 
-			break;
+			return window;
 		}
 		case 'tabbed': {
 			let window = new BrowserWindow({
@@ -249,7 +249,7 @@ export function createWindow(settings: WindowOptions) {
 			// So in this case, when the user specifies settings.url, we're really just
 			// creating a 'tab' window and attaching it to this one
 
-			break;
+			return window;
 		}
 		case 'tab': {
 			//A tab can be a child to a tabbed window or be standalone
@@ -322,7 +322,7 @@ export function createWindow(settings: WindowOptions) {
 				}
 			});
 
-			break;
+			return window;
 		}
 	}
 }

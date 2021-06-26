@@ -1,0 +1,2 @@
+int getMouseX();
+int getMouseY();
