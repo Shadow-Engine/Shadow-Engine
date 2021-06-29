@@ -259,7 +259,7 @@ ipcMain.on('createEditorWindow', (_event, projectName) => {
 
 ipcMain.on(
 	'util.internal.createContextMenu',
-	(_event, stringoptions: string, callback: contentMenuItemOptions) => {
+	(_event, stringoptions: string /* , callback: contentMenuItemOptions */) => {
 		let x: number;
 		let y: number;
 		let options: contextMenuOptions = JSON.parse(stringoptions);
@@ -275,8 +275,8 @@ ipcMain.on(
 		}
 
 		let contextMenuWindow: BrowserWindow = createWindow({
-			height: options.items.length * 15,
-			width: 300,
+			height: options.items.length * 20,
+			width: 200,
 			decorations: 'undecorated',
 			url: '../dom/Popups/context-menu.html',
 			onTop: true,
@@ -288,9 +288,13 @@ ipcMain.on(
 		contextMenuWindow.webContents.on('did-finish-load', function () {
 			contextMenuWindow.webContents.send(
 				'main.createContextMenu',
-				options,
-				callback
+				JSON.stringify(options) /* ,
+				callback */
 			);
+		});
+
+		contextMenuWindow.on('blur', function () {
+			contextMenuWindow.close();
 		});
 	}
 );

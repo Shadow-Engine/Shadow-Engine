@@ -98,11 +98,13 @@ export interface contextMenuOptions {
 }
 
 export interface contentMenuItemOptions {
-	label: string; // Text shown in the item
+	label?: string; // Text shown in the item
 	title?: string; // Text shown on hover
 	click?: Function; // Function triggered on click
-	type?: 'text' | 'separator';
+	type?: contextMenuOptionType;
 }
+
+export type contextMenuOptionType = 'text' | 'separator';
 
 // Creates a context menu for the user to interact with
 // and returns the index of whatever item was selected,
@@ -114,9 +116,5 @@ export function createContextMenu(
 	callback: contextMenuCallback
 ): void {
 	// The bulk is handled by the main process
-	ipcRenderer.send(
-		'util.internal.createContextMenu',
-		JSON.stringify(options),
-		callback
-	);
+	ipcRenderer.send('util.internal.createContextMenu', JSON.stringify(options));
 }

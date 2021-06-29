@@ -99,7 +99,24 @@ document
 				{
 					items: [
 						{
-							label: 'Click me',
+							label: 'Find',
+							title: 'Hovered'
+						},
+						{
+							label: 'Replace',
+							title: 'Hovered'
+						},
+						{ type: 'separator' },
+						{
+							label: 'Cut',
+							title: 'Hovered'
+						},
+						{
+							label: 'Copy',
+							title: 'Hovered'
+						},
+						{
+							label: 'Paste',
 							title: 'Hovered'
 						}
 					]
