@@ -4,6 +4,6 @@
 	"ProductVersionMajor": 0,
 	"ProductVersionMinor": 1,
 	"ProductVersionPatch": 0,
-	"ProductWebsite": "http://localhost:8080",
-	"ProductWebsite_DEV": "https://shadow.77z.dev"
+	"ProductWebsite_DEV": "http://localhost:8080",
+	"ProductWebsite": "https://shadow.77z.dev"
 }

@@ -4,7 +4,8 @@ import {
 	BrowserWindow,
 	dialog,
 	ipcMain,
-	Menu
+	Menu,
+	WebContents
 } from 'electron';
 import { openProcessManager } from './scripts/ProcessManager';
 import {
@@ -266,9 +267,11 @@ ipcMain.on('createEditorWindow', (_event, projectName) => {
 	});
 });
 
+let lastOpenedContextMenu: WebContents;
+
 ipcMain.on(
 	'util.internal.createContextMenu',
-	(_event, stringoptions: string /* , callback: contentMenuItemOptions */) => {
+	(event, stringoptions: string /* , callback: contentMenuItemOptions */) => {
 		let x: number;
 		let y: number;
 		let options: contextMenuOptions = JSON.parse(stringoptions);
@@ -305,11 +308,14 @@ ipcMain.on(
 		contextMenuWindow.on('blur', function () {
 			contextMenuWindow.close();
 		});
+
+		lastOpenedContextMenu = event.sender;
 	}
 );
 
 ipcMain.on('context-menu.return-value', function (_event, index) {
 	console.log(index);
+	lastOpenedContextMenu.send('context-menu-callback', index);
 });
 
 ipcMain.on('util.setWindowOnTop', function () {

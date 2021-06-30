@@ -12,6 +12,7 @@ import {
 	getProjects,
 	openProject
 } from '../toplevel/ProjectManager';
+import { ipcRenderer } from 'electron';
 
 // import { ahh, fileNameChecker } from '../toplevel/PathManager';
 
@@ -127,35 +128,19 @@ document
 		});
 
 		projectElement.addEventListener('contextmenu', function () {
-			console.log('Ctx menu');
-			createContextMenu(
-				{
-					items: [
-						{
-							label: 'Find',
-							title: 'Hovered'
-						},
-						{
-							label: 'Replace',
-							title: 'Hovered'
-						},
-						{ type: 'separator' },
-						{
-							label: 'Cut',
-							title: 'Hovered'
-						},
-						{
-							label: 'Copy',
-							title: 'Hovered'
-						},
-						{
-							label: 'Paste',
-							title: 'Hovered'
-						}
-					]
-				},
-				(index) => {}
-			);
+			createContextMenu({
+				items: [
+					{ label: 'Open' },
+					{ label: 'Delete' },
+					{ type: 'separator' },
+					{ label: 'Open in explorer' }
+				]
+			});
+		});
+
+		ipcRenderer.on('context-menu-callback', function (_event, index) {
+			console.log('CALLBACK');
+			console.log(index);
 		});
 
 		// Make focusable

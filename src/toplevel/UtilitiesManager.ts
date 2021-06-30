@@ -83,12 +83,6 @@ export function getEngineVersion(): string {
 	return `${Product.ProductVersionMajor}.${Product.ProductVersionMinor}.${Product.ProductVersionPatch}`;
 }
 
-// The interface for the callback for the context menu
-// function
-export interface contextMenuCallback {
-	(index: number): void;
-}
-
 // The interface for the options for the context menu
 // function
 export interface contextMenuOptions {
@@ -111,10 +105,7 @@ export type contextMenuOptionType = 'text' | 'separator';
 // in a callback, if none was selected and instead the
 // context menu was closed, it would return -1 so you
 // can just check for < 0
-export function createContextMenu(
-	options: contextMenuOptions,
-	callback: contextMenuCallback
-): void {
+export function createContextMenu(options: contextMenuOptions): void {
 	// The bulk is handled by the main process
 	ipcRenderer.send('util.internal.createContextMenu', JSON.stringify(options));
 }
@@ -129,5 +120,6 @@ export function randomRange(min: number, max: number): number {
 // make the currently focused window appear on top
 // returns void
 export function makeWindowOnTop() {
+	// Handled by the main process
 	ipcRenderer.send('util.setWindowOnTop');
 }
