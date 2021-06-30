@@ -5,6 +5,8 @@ import {
 	contextMenuOptionType
 } from '../toplevel/UtilitiesManager';
 
+let optionIndex: number = 0;
+
 window.onload = function () {
 	ipcRenderer.on(
 		'main.createContextMenu',
@@ -40,7 +42,13 @@ function createContextMenuOption(
 			let item: HTMLLIElement = document.createElement('li');
 			item.innerText = label;
 			item.title = title;
+			let thisItemsValue: number = optionIndex;
+			item.addEventListener('click', function () {
+				ipcRenderer.send('context-menu.return-value', thisItemsValue);
+				window.close();
+			});
 			document.getElementById('contextMenuItems').appendChild(item);
+			optionIndex++;
 			break;
 		}
 

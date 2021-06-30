@@ -15,7 +15,12 @@
 		<div class="new-project-section" id="new-project-section">
 			<h1>New Project</h1>
 			<p class="error">NOTICE: This area needs to be finished</p>
-			<input type="text" id="projectname" placeholder="Name..." />
+			<input
+				type="text"
+				id="projectname"
+				spellcheck="false"
+				placeholder="Name..."
+			/>
 			<button id="project-creation-button">Create Project</button>
 			<p id="err" class="error"></p>
 			<span>Render Engine (Can be changed later)</span>
@@ -38,6 +43,10 @@
 		</div>
 
 		<button id="newprojectbtn">+</button>
+
+		<div id="loading">
+			<!-- <img src="../../media/loadinganims/crane.gif" draggable="false" /> -->
+		</div>
 
 		<script>
 			require('../../dist/editor/ProjectManager.js');

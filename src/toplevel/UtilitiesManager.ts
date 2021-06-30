@@ -118,3 +118,16 @@ export function createContextMenu(
 	// The bulk is handled by the main process
 	ipcRenderer.send('util.internal.createContextMenu', JSON.stringify(options));
 }
+
+// Get a random number within a specified range,
+// returns a number
+export function randomRange(min: number, max: number): number {
+	var part = Math.random() * (max - min) + min;
+	return Math.round(part);
+}
+
+// make the currently focused window appear on top
+// returns void
+export function makeWindowOnTop() {
+	ipcRenderer.send('util.setWindowOnTop');
+}

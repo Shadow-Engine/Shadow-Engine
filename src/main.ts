@@ -144,8 +144,11 @@ function initMain() {
 	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
+let projectManager: BrowserWindow;
+let editorWindow: BrowserWindow;
+
 function launchProjectManager() {
-	createWindow({
+	projectManager = createWindow({
 		decorations: 'tool',
 		height: 450,
 		width: 800,
@@ -248,12 +251,18 @@ ipcMain.on('PluginInstall.fetchPluginConfig', (event, packageId) => {
 });
 
 ipcMain.on('createEditorWindow', (_event, projectName) => {
-	createWindow({
+	editorWindow = createWindow({
 		height: 900,
 		width: 1500,
 		decorations: 'tabbed',
 		windowTitle: 'Shadow Editor',
 		url: '../dom/editor/editor.html'
+	});
+
+	editorWindow.webContents.on('did-finish-load', function () {
+		if (projectManager !== null) {
+			projectManager.close();
+		}
 	});
 });
 
@@ -298,6 +307,14 @@ ipcMain.on(
 		});
 	}
 );
+
+ipcMain.on('context-menu.return-value', function (_event, index) {
+	console.log(index);
+});
+
+ipcMain.on('util.setWindowOnTop', function () {
+	BrowserWindow.getFocusedWindow().setAlwaysOnTop(true);
+});
 
 /* app.on('browser-window-created', function () {
 	console.log('NEW BROWSER WINDOW!');

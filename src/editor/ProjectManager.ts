@@ -2,7 +2,9 @@
 
 import {
 	createContextMenu,
-	getShadowEngineDataDir
+	getShadowEngineDataDir,
+	makeWindowOnTop,
+	randomRange
 } from '../toplevel/UtilitiesManager';
 import { fileNameChecker } from '../toplevel/PathManager';
 import {
@@ -51,6 +53,41 @@ setInterval(() => {
 	}
 }, 100);
 
+// When the project name box is focused, replace all spaces with hyphens
+{
+	let projectNameInput = document.getElementById(
+		'projectname'
+	) as HTMLInputElement;
+
+	projectNameInput.addEventListener('focus', () => {
+		console.log('a');
+	});
+
+	projectNameInput.addEventListener('blur', () => {});
+
+	projectNameInput.addEventListener('keydown', function (e) {
+		if (e.key == ' ') {
+			// Spacebar
+			e.preventDefault();
+			projectNameInput.value = projectNameInput.value + '-';
+		}
+	});
+}
+
+// Pick a random loading animation to use
+{
+	let images: string[] = [
+		'../../media/loadinganims/crane.gif',
+		'../../media/loadinganims/kris.gif',
+		'../../media/loadinganims/wis.gif'
+	];
+
+	let img: HTMLImageElement = document.createElement('img');
+	img.src = images[randomRange(0, images.length - 1)];
+	img.draggable = false;
+	document.getElementById('loading').appendChild(img);
+}
+
 document
 	.getElementById('project-creation-button')
 	.addEventListener('click', function () {
@@ -74,14 +111,6 @@ document
 	var projects = getProjects();
 	let sddr: string = getShadowEngineDataDir();
 	for (let i: number = 0; i < projects.length; i++) {
-		// let projectElement: HTMLLIElement = document.createElement('li');
-		// projectElement.addEventListener('dblclick', function () {
-		// 	openProject(projects[i]);
-		// });
-		// projectElement.innerText = projects[i];
-		// projectElement.tabIndex = 0;
-		// document.getElementById('projects').appendChild(projectElement);
-
 		let projectName: string = projects[i];
 
 		let projectElement: HTMLDivElement = document.createElement('div');
@@ -90,6 +119,8 @@ document
 
 		// Create Events
 		projectElement.addEventListener('dblclick', function () {
+			makeWindowOnTop();
+			showLoading();
 			openProject(projectName);
 		});
 
@@ -142,7 +173,6 @@ document
 	}
 }
 
-/* window.onload = function () {
-	openProject('abc');
-};
- */
+function showLoading() {
+	document.getElementById('loading').style.clipPath = 'circle(200% at 50% 50%)';
+}
