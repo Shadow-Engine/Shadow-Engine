@@ -95,6 +95,8 @@ document
 			document.getElementById('projectname') as HTMLInputElement
 		).value;
 		if (vaildProjectName) {
+			showLoading();
+			makeWindowOnTop();
 			createProject(projectName, 'TypeScript');
 			openProject(projectName);
 		} else {
