@@ -1,0 +1,1 @@
+int xgetmousepos(int isX);

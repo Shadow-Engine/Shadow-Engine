@@ -2,10 +2,11 @@
 	"targets": [
 		{
 			"target_name": "IOUtils",
-			"cflags!": [ "-fno-exceptions" ],
-			"cflags_cc!": [ "-fno-exceptions" ],
+			"cflags!": [ "-fno-exceptions -lX11" ],
+			"cflags_cc!": [ "-fno-exceptions -lX11" ],
 			"sources": [
 				"./native/IOUtils/mouse/mouse.cpp",
+				"./native/IOUtils/mouse/xmouse.c",
 				"./native/IOUtils/index.cpp"
 			],
 			"include_dirs": [
