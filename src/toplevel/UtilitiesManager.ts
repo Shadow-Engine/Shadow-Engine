@@ -17,7 +17,7 @@ export function getShadowEngineDataDir(): string {
 		directory = homedir() + '/AppData/Roaming/Shadow';
 	} else {
 		//Everything else includes Linux, FreeBSD, OpenBSD, NetBSD, and Darwin, maybe more
-		directory = homedir() + '/Shadow';
+		directory = homedir() + '/.config/Shadow';
 	}
 	return directory;
 }
