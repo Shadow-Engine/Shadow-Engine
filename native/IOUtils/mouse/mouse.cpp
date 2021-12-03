@@ -1,7 +1,10 @@
 #include "mouse.h"
 #include <stdlib.h>
 #include <string.h>
-#include "xmouse.h"
+
+#if defined(linux)
+#include "xmouse_linux.h"
+#endif
 
 #if defined(_WIN32)
 #include <windows.h>

@@ -1,0 +1,38 @@
+.leftpanel {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 15%;
+	height: 70%;
+	background: #000;
+}
+
+.leftpanel-tabs {
+	display: flex;
+	height: 30px;
+}
+
+.leftpanel-button {
+	width: 25%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: #000;
+	cursor: pointer;
+}
+
+.leftpanel-button-meshes {
+	background-image: url(../../media/ui/editor/sidepanel/Meshes.png);
+}
+
+.leftpanel-button-lights {
+	background-image: url(../../media/ui/editor/sidepanel/Lights.png);
+}
+
+.leftpanel-button-cinematics {
+	background-image: url(../../media/ui/editor/sidepanel/Cinematics.png);
+}
+
+.leftpanel-button-volumes {
+	background-image: url(../../media/ui/editor/sidepanel/Volumes.png);
+}

@@ -255,9 +255,9 @@ ipcMain.on('createEditorWindow', (_event, projectName) => {
 	editorWindow = createWindow({
 		height: 900,
 		width: 1500,
-		decorations: 'tabbed',
+		decorations: 'basic',
 		windowTitle: 'Shadow Editor',
-		url: '../dom/editor/editor.html'
+		url: '../dom/editor/Main.html'
 	});
 
 	editorWindow.webContents.on('did-finish-load', function () {

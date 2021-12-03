@@ -1,0 +1,40 @@
+{
+	"conditions": [
+		['OS=="linux"', {
+			"targets": [
+				{
+					"target_name": "IOUtils",
+					"cflags!": [ "-fno-exceptions -lX11" ],
+					"cflags_cc!": [ "-fno-exceptions -lX11" ],
+					"sources": [
+						"./native/IOUtils/mouse/mouse.cpp",
+						"./native/IOUtils/mouse/xmouse.cpp",
+						"./native/IOUtils/index.cpp"
+					],
+					"include_dirs": [
+						"<!@(node -p \"require('node-addon-api').include\")"
+					],
+					"defines": [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
+				}
+			]
+		}],
+		['OS=="win"', {
+			"targets": {
+				{
+					"target_name": "IOUtils",
+					"cflags!": [ "-fno-exceptions " ],
+					"cflags_cc!": [ "-fno-exceptions" ],
+					"sources": [
+						"./native/IOUtils/mouse/mouse.cpp",
+						"./native/IOUtils/mouse/xmouse.cpp",
+						"./native/IOUtils/index.cpp"
+					],
+					"include_dirs": [
+						"<!@(node -p \"require('node-addon-api').include\")"
+					],
+					"defines": [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
+				}
+			}
+		}]
+	]
+}
