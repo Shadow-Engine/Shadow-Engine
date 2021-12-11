@@ -1,0 +1,93 @@
+{
+  "main": {
+    "id": "dc14f988f3cc03ad",
+    "type": "split",
+    "children": [
+      {
+        "id": "f6d875e4173cd2eb",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Logger.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "146ecf39a6a93714",
+    "type": "split",
+    "children": [
+      {
+        "id": "556e5ed870311a67",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "daacb1e46df747d1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "e3c193c362c1229b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "27fea098a74b19d4",
+    "type": "split",
+    "children": [
+      {
+        "id": "b820a6bb38764568",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6943fccda38708e6",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Logger.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "f6d875e4173cd2eb",
+  "lastOpenFiles": [
+    "Logger.md"
+  ]
+}

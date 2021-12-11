@@ -124,7 +124,6 @@ const globalMenuTemplate: object[] = [
 */
 function initMain() {
 	initializeConfig();
-	initializePluginAuthentication();
 
 	const menu = Menu.buildFromTemplate(globalMenuTemplate);
 	Menu.setApplicationMenu(menu);
@@ -137,11 +136,8 @@ function initMain() {
 		}
 	}
 
-	// startPluginHost();
-
 	launchProjectManager();
 
-	console.log(getPluginTable());
 	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');
 }
 
@@ -261,9 +257,7 @@ ipcMain.on('createEditorWindow', (_event, projectName) => {
 	});
 
 	editorWindow.webContents.on('did-finish-load', function () {
-		if (projectManager !== null) {
-			projectManager.close();
-		}
+		if (projectManager !== null) projectManager.close();
 	});
 });
 
@@ -320,6 +314,61 @@ ipcMain.on('context-menu.return-value', function (_event, index) {
 
 ipcMain.on('util.setWindowOnTop', function () {
 	BrowserWindow.getFocusedWindow().setAlwaysOnTop(true);
+});
+
+// Logger
+
+let loggerstreams = [
+	{
+		name: 'top',
+		data: 'Default Stream'
+	},
+	{
+		name: 'other',
+		data: 'Another Stream'
+	}
+];
+
+ipcMain.on('Logger.createNewStream', function (_event, streamName: string) {
+	loggerstreams.push({
+		name: streamName,
+		data: 'New stream: ' + streamName
+	});
+	updateLogger();
+});
+
+ipcMain.on(
+	'Logger.writeToStream',
+	function (_event, streamName: string, data: string) {
+		for (let i = 0; i < loggerstreams.length; i++) {
+			if (loggerstreams[i].name == streamName) {
+				loggerstreams[i].data += data;
+				loggerstreams[i].data += '\n';
+				break;
+			}
+		}
+		updateLogger();
+	}
+);
+
+let loggerWindow: BrowserWindow = null;
+
+function updateLogger() {
+	if (!loggerWindow) return;
+
+	loggerWindow.getBrowserView().webContents.send('Main.Update', loggerstreams);
+}
+
+ipcMain.on('Logger.openLogger', () => {
+	loggerWindow = createWindow({
+		decorations: 'tool',
+		height: 450,
+		width: 800,
+		url: '../dom/Logger/Logger.html',
+		windowTitle: 'Logger'
+	});
+	console.log('Logger opened');
+	loggerWindow.getBrowserView().webContents.on('did-finish-load', updateLogger);
 });
 
 /* app.on('browser-window-created', function () {
