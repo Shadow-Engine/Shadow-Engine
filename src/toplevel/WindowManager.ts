@@ -161,7 +161,8 @@ export function createWindow(settings: WindowOptions): BrowserWindow {
 				backgroundColor: '#222222',
 				autoHideMenuBar: true,
 				titleBarStyle: useNativeTitlebar ? 'default' : 'hidden', // For MacOS
-				trafficLightPosition: { x: 5, y: 5 }
+				trafficLightPosition: { x: 5, y: 5 },
+				icon: '../media/shadow.png'
 			});
 
 			window.loadFile('../dom/frames/tool.html');

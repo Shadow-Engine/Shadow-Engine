@@ -10,6 +10,7 @@ import { Server } from 'ws';
 import * as colors from 'colors';
 import { exec } from 'child_process';
 import * as URLParse from 'url-parse';
+import { MAINloggerCreateNewStream, MAINloggerWriteToStream } from '../main';
 
 interface pluginSocket extends WebSocket {
 	id: string;
@@ -21,6 +22,9 @@ let authtoken: string = v4();
 export function startPluginHost() {
 	getPort(function (err, port) {
 		if (err) throw err;
+
+		MAINloggerCreateNewStream('plugins');
+		MAINloggerWriteToStream('plugins', 'Starting PluginHost');
 
 		const wss = new Server({ port: port });
 

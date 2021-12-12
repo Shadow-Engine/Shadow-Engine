@@ -13,7 +13,7 @@ int xgetmousepos(int isX) {
 	xdo_get_mouse_location(xdo, x, y, screen);
 
 	if (isX)
-		return x;
+		return 0;
 	else
-		return y;
+		return 0;
 }

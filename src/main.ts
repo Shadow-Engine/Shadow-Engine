@@ -16,12 +16,7 @@ import {
 import { createWindow, WindowOptions } from './toplevel/WindowManager';
 import { resolve as pathresolve } from 'path';
 import electronIsDev = require('electron-is-dev');
-import {
-	initializePluginAuthentication,
-	getPluginTable,
-	repoPluginInstall,
-	startPluginHost
-} from './toplevel/PluginManager';
+import { repoPluginInstall, startPluginHost } from './toplevel/PluginManager';
 import {
 	contentMenuItemOptions,
 	contextMenuOptions,
@@ -322,31 +317,39 @@ ipcMain.on('util.setWindowOnTop', function () {
 let loggerstreams: StreamInterface[] = [
 	{
 		name: 'main',
-		data: 'Default Stream for the main process'
+		data: 'Default Stream for the main process\n'
 	}
 ];
 
 ipcMain.on('Logger.createNewStream', function (_event, streamName: string) {
+	MAINloggerCreateNewStream(streamName);
+});
+
+export function MAINloggerCreateNewStream(streamName: string) {
 	loggerstreams.push({
 		name: streamName,
-		data: 'New stream: ' + streamName
+		data: 'New stream: ' + streamName + '\n'
 	});
 	updateLogger();
-});
+}
 
 ipcMain.on(
 	'Logger.writeToStream',
 	function (_event, streamName: string, data: string) {
-		for (let i = 0; i < loggerstreams.length; i++) {
-			if (loggerstreams[i].name == streamName) {
-				loggerstreams[i].data += data;
-				loggerstreams[i].data += '\n';
-				break;
-			}
-		}
-		updateLogger();
+		MAINloggerWriteToStream(streamName, data);
 	}
 );
+
+export function MAINloggerWriteToStream(streamName: string, data: string) {
+	for (let i = 0; i < loggerstreams.length; i++) {
+		if (loggerstreams[i].name == streamName) {
+			loggerstreams[i].data += data;
+			loggerstreams[i].data += '\n';
+			break;
+		}
+	}
+	updateLogger();
+}
 
 let loggerWindow: BrowserWindow = null;
 
@@ -357,6 +360,10 @@ function updateLogger() {
 }
 
 ipcMain.on('Logger.openLogger', () => {
+	MAINopenLogger();
+});
+
+export function MAINopenLogger() {
 	loggerWindow = createWindow({
 		decorations: 'tool',
 		height: 450,
@@ -365,11 +372,14 @@ ipcMain.on('Logger.openLogger', () => {
 		windowTitle: 'Logger'
 	});
 	loggerWindow.getBrowserView().webContents.on('did-finish-load', updateLogger);
-});
+}
 
 // SECTION Plugins
 
-ipcMain.on('Plugin.startPluginHost', function () {});
+ipcMain.on('Plugin.startPluginHost', function () {
+	console.log('Plugin called');
+	startPluginHost();
+});
 
 /* app.on('browser-window-created', function () {
 	console.log('NEW BROWSER WINDOW!');
