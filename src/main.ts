@@ -317,7 +317,7 @@ ipcMain.on('util.setWindowOnTop', function () {
 	BrowserWindow.getFocusedWindow().setAlwaysOnTop(true);
 });
 
-// Logger
+// SECTION Logger
 
 let loggerstreams: StreamInterface[] = [
 	{
@@ -366,6 +366,10 @@ ipcMain.on('Logger.openLogger', () => {
 	});
 	loggerWindow.getBrowserView().webContents.on('did-finish-load', updateLogger);
 });
+
+// SECTION Plugins
+
+ipcMain.on('Plugin.startPluginHost', function () {});
 
 /* app.on('browser-window-created', function () {
 	console.log('NEW BROWSER WINDOW!');
