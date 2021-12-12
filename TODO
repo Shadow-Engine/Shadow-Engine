@@ -23,6 +23,8 @@ Possible plugin permissions:
 	
 	shadow.downloadManager			(uses electron-download-manager)
 
+	shadow.personalDirectory		(gives the plugin its own directory to use and and the plugin can get the path to the directory via an api call)
+
 	deno.danger.all (DANGER: THIS BYPASSES E V E R Y T H I N G AND EVEN ALLOWS FOR PERMISSIONS THAT SHADOW DOESN'T SUPPORT LIKE DENO PLUGINS)
 	deno.danger.run (DANGER: This allows the plugin to spawn subprocesses which can bypass Shadow's restrictions)
 	deno.env		(Environment variable access)

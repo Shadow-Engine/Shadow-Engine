@@ -132,6 +132,8 @@ function initMain() {
 		}
 	}
 
+	MAINopenLogger();
+
 	launchProjectManager();
 
 	//createErrorPopup('Shadow Engine Internal Error', 'AHhhhhh');

@@ -4,7 +4,7 @@ import { createWindow } from './WindowManager';
 import { v4 } from 'uuid';
 import { readdir } from 'fs';
 import { getShadowEngineDataDir, isDirectory } from './UtilitiesManager';
-import { existsSync, readdirSync } from 'original-fs';
+import { existsSync, readdirSync, readFileSync } from 'original-fs';
 import { getPort } from 'portfinder';
 import { Server } from 'ws';
 import * as colors from 'colors';
@@ -17,6 +17,19 @@ interface pluginSocket extends WebSocket {
 	authenticated: boolean;
 }
 
+interface Plugin {
+	id: string;
+	pretty: string;
+	version: string;
+	copyright: string;
+	author: string;
+	launchscript: string;
+	permissions: string[];
+	allowedReadPaths: string[];
+	allowedWritePaths: string[];
+	allowedDomains: string[];
+}
+
 let authtoken: string = v4();
 
 export function startPluginHost() {
@@ -24,7 +37,7 @@ export function startPluginHost() {
 		if (err) throw err;
 
 		MAINloggerCreateNewStream('plugins');
-		MAINloggerWriteToStream('plugins', 'Starting PluginHost');
+		MAINloggerWriteToStream('plugins', 'Starting PluginHost on port ' + port);
 
 		const wss = new Server({ port: port });
 
@@ -40,7 +53,34 @@ export function startPluginHost() {
 }
 
 function startPlugins(port: number) {
-	// exec(`deno run --allow-net=localhost:${port} `)
+	let sddr: string = getShadowEngineDataDir();
+	MAINloggerWriteToStream(
+		'plugins',
+		'Searching plugin directory for valid plugins'
+	);
+	let validPlugins = getPluginArray();
+	MAINloggerWriteToStream(
+		'plugins',
+		'Valid plugins: ' + JSON.stringify(validPlugins)
+	);
+
+	for (let i = 0; i < validPlugins.length; i++) {
+		MAINloggerCreateNewStream('plugin ' + validPlugins[i]);
+		let pluginData: Plugin = JSON.parse(
+			readFileSync(`${sddr}/plugins/${validPlugins[i]}/plugin.json`, 'utf-8')
+		);
+
+		exec(
+			`deno run --allow-net=localhost:${port} ${sddr}/plugins/${validPlugins[i]}/${pluginData.launchscript} ${port} ${authtoken}`,
+			(error, stdout, stderr) => {
+				if (error)
+					MAINloggerWriteToStream('plugins', 'Plugin exec error: ' + error);
+				if (stderr)
+					MAINloggerWriteToStream('plugins', 'Plugin error: ' + stderr); // Change errors to show as a notification in the future
+				if (stdout) MAINloggerWriteToStream('plugins', stdout);
+			}
+		);
+	}
 }
 
 export function repoPluginInstall(inputUri: string) {
@@ -54,51 +94,34 @@ export function repoPluginInstall(inputUri: string) {
 	});
 }
 
-// Initialize the system for authenticating plugins,
-// this is in place
-export function initializePluginAuthentication(): void {
-	let path: string = '#sddr/plugins/auth.sec';
-	assertMacroPath(path);
-	modConfigFile(path, 'token', v4());
-}
-
-interface Plugin {
-	id: string;
-	pretty: string;
-	version: string;
-	copyright: string;
-	author: string;
-	launchscript: string;
-}
-
 // Should be run after uninstall of a plugin, install of a plugin, and launch of Shadow.
 // Returns an array of a plugins configuation such as it's id and permissions. This is so
 // that when a plugin calls a Shadow API, the engine can verify it has permission to do so.
 // NOTE: I made this function a lot better :)
-export function getPluginTable(): Plugin[] {
-	let sddr: string = getShadowEngineDataDir(); // store here so we're not calling this function a bunch
-	let validPlugins: string[] = getPluginArray();
+// export function getPluginTable(): Plugin[] {
+// 	let sddr: string = getShadowEngineDataDir(); // store here so we're not calling this function a bunch
+// 	let validPlugins: string[] = getPluginArray();
 
-	let newPluginTable: Plugin[] = [];
+// 	let newPluginTable: Plugin[] = [];
 
-	for (let i: number = 0; i < validPlugins.length; i++) {
-		let pluginConfigPath: string =
-			'#sddr/plugins/' + validPlugins[i] + '/plug.sec';
-		assertMacroPath(pluginConfigPath);
+// 	for (let i: number = 0; i < validPlugins.length; i++) {
+// 		let pluginConfigPath: string =
+// 			'#sddr/plugins/' + validPlugins[i] + '/plug.sec';
+// 		assertMacroPath(pluginConfigPath);
 
-		newPluginTable.push({
-			id: readConfigFile(pluginConfigPath, 'id'),
-			pretty: readConfigFile(pluginConfigPath, 'pretty'),
-			version: readConfigFile(pluginConfigPath, 'version'),
-			copyright: readConfigFile(pluginConfigPath, 'copyright'),
-			author: readConfigFile(pluginConfigPath, 'author'),
-			launchscript: readConfigFile(pluginConfigPath, 'launchscript')
-		});
-	}
+// 		newPluginTable.push({
+// 			id: readConfigFile(pluginConfigPath, 'id'),
+// 			pretty: readConfigFile(pluginConfigPath, 'pretty'),
+// 			version: readConfigFile(pluginConfigPath, 'version'),
+// 			copyright: readConfigFile(pluginConfigPath, 'copyright'),
+// 			author: readConfigFile(pluginConfigPath, 'author'),
+// 			launchscript: readConfigFile(pluginConfigPath, 'launchscript')
+// 		});
+// 	}
 
-	// return final table
-	return newPluginTable;
-}
+// 	// return final table
+// 	return newPluginTable;
+// }
 
 // Returns an array of plugins in the #sddr/plugins folder
 export function getPluginArray(): string[] {
@@ -110,29 +133,13 @@ export function getPluginArray(): string[] {
 		// Check if entry is a folder and has a plug.sec file
 		if (
 			isDirectory(`${sddr}/plugins/${files[i]}`) &&
-			existsSync(`${sddr}/plugins/${files[i]}/plug.sec`)
+			existsSync(`${sddr}/plugins/${files[i]}/plugin.json`)
 		) {
 			validPlugins.push(files[i]);
 		}
 	}
 
 	return validPlugins;
-}
-
-// TODO: This is a stub
-// This function is designed to loop through every single js file in a plugin
-// and add a similar piece of code that can be found in dumbPermissionTest.js
-// that's designed to override the require function so that plugins have to
-// state what modules they will be requiring in their plug.sec config, then
-// Shadow Engine will allow use of the specified modules. This is in place so
-// that the end user installing plugins knows what plugins have access to
-// before they actually install the plugin.
-export function lockdownPlugins() {}
-
-// Set to null before startPluginHost Changes it
-let pluginHostPort: number = null;
-export function getPluginHostPort(): number {
-	return pluginHostPort;
 }
 
 // The plugin host is the WebSocket Server that Shadow Engine is running that
