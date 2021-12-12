@@ -9,6 +9,35 @@ import { getPort } from 'portfinder';
 import { Server } from 'ws';
 import * as colors from 'colors';
 import { exec } from 'child_process';
+import * as URLParse from 'url-parse';
+
+interface pluginSocket extends WebSocket {
+	id: string;
+	authenticated: boolean;
+}
+
+let authtoken: string = v4();
+
+export function startPluginHost() {
+	getPort(function (err, port) {
+		if (err) throw err;
+
+		const wss = new Server({ port: port });
+
+		wss.on('connection', function connection(ws: pluginSocket, req) {
+			const parameters = URLParse(req.url, true);
+			ws.id = v4();
+			ws.authenticated = false;
+			if (parameters.query.token == authtoken) ws.authenticated = true;
+		});
+
+		startPlugins(port);
+	});
+}
+
+function startPlugins(port: number) {
+	// exec(`deno run --allow-net=localhost:${port} `)
+}
 
 export function repoPluginInstall(inputUri: string) {
 	createWindow({
@@ -105,34 +134,34 @@ export function getPluginHostPort(): number {
 // The plugin host is the WebSocket Server that Shadow Engine is running that
 // will listen for plugin connections, handle authentication, manage API calls
 // and whatnot
-export function startPluginHost() {
-	getPort(function (err, port) {
-		//Async function that looks for an open port
-		if (err) throw err;
-		logAsPluginHost(`Listening on port ${port}`);
-		pluginHostPort = port;
-		pluginHostServer(port);
-	});
+// export function startPluginHost() {
+// 	getPort(function (err, port) {
+// 		//Async function that looks for an open port
+// 		if (err) throw err;
+// 		logAsPluginHost(`Listening on port ${port}`);
+// 		pluginHostPort = port;
+// 		pluginHostServer(port);
+// 	});
 
-	function pluginHostServer(port: number) {
-		const wss = new Server({ port: port });
+// 	function pluginHostServer(port: number) {
+// 		const wss = new Server({ port: port });
 
-		wss.on('listening', () => {
-			let plugins: string[] = getPluginArray();
-			for (let i: number = 0; i < plugins.length; i++) {
-				logAsPluginHost('Loading Plugin ' + plugins[i]);
-				// exec("deno run --allow-net=localhost", () => {});
-			}
-		});
+// 		wss.on('listening', () => {
+// 			let plugins: string[] = getPluginArray();
+// 			for (let i: number = 0; i < plugins.length; i++) {
+// 				logAsPluginHost('Loading Plugin ' + plugins[i]);
+// 				// exec("deno run --allow-net=localhost", () => {});
+// 			}
+// 		});
 
-		wss.on('connection', function connection(ws) {
-			ws.on('message', function incoming(message: string) {
-				logAsPluginHost('From plugin: ' + message);
-			});
-		});
-	}
+// 		wss.on('connection', function connection(ws) {
+// 			ws.on('message', function incoming(message: string) {
+// 				logAsPluginHost('From plugin: ' + message);
+// 			});
+// 		});
+// 	}
 
-	function logAsPluginHost(message: string) {
-		console.log(colors.magenta('[PluginHost] ') + message);
-	}
-}
+// 	function logAsPluginHost(message: string) {
+// 		console.log(colors.magenta('[PluginHost] ') + message);
+// 	}
+// }
