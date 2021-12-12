@@ -4,7 +4,7 @@ import {
 	setPluginID,
 	connectToShadow,
 	authenticate
-} from './ShadowEnginePlugin.ts';
+} from './ShadowEnginePlugin';
 
 setPluginID('tk.a77zsite.shadow.android');
 const ws: WebSocket = connectToShadow();

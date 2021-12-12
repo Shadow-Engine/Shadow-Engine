@@ -28,6 +28,7 @@
 		"@types/url-parse": "^1.4.5",
 		"colors": "^1.4.0",
 		"crypto-js": "^4.0.0",
+		"download": "^8.0.0",
 		"electron": "^13.1.4",
 		"electron-download-manager": "^2.1.2",
 		"electron-is-dev": "^2.0.0",

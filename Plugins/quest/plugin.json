@@ -1,0 +1,12 @@
+{
+	"id": "dev.77z.shadow.oculus.quest",
+	"pretty": "Oculus Quest Support",
+	"version": "0.1.0",
+	"copyright": "Copyright (C) 77Z 2021",
+	"author": "77Z",
+	"launchscript": "oculus.ts",
+	"permissions": [],
+	"allowedReadPaths": [],
+	"allowedWritePaths": [],
+	"allowedDomains": []
+}

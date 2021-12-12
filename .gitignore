@@ -1,4 +1,6 @@
 build/
+# Keep folder itself but not its contents
+Deno/*
 
 # Logs
 logs
