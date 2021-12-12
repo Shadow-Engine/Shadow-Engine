@@ -30,6 +30,7 @@ import {
 import * as Product from './product.json';
 import fetch from 'node-fetch';
 import { getMouseX, getMouseY } from './native/IOUtils';
+import { StreamInterface } from './toplevel/Logger';
 // import { DownloadManager } from 'electron-download-manager';
 
 //Check launch arguments to see if debugger should enable,
@@ -318,14 +319,10 @@ ipcMain.on('util.setWindowOnTop', function () {
 
 // Logger
 
-let loggerstreams = [
+let loggerstreams: StreamInterface[] = [
 	{
-		name: 'top',
-		data: 'Default Stream'
-	},
-	{
-		name: 'other',
-		data: 'Another Stream'
+		name: 'main',
+		data: 'Default Stream for the main process'
 	}
 ];
 
@@ -367,7 +364,6 @@ ipcMain.on('Logger.openLogger', () => {
 		url: '../dom/Logger/Logger.html',
 		windowTitle: 'Logger'
 	});
-	console.log('Logger opened');
 	loggerWindow.getBrowserView().webContents.on('did-finish-load', updateLogger);
 });
 

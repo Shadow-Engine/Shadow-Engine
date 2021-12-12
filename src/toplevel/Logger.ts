@@ -2,6 +2,11 @@
 
 import { ipcRenderer } from 'electron';
 
+export interface StreamInterface {
+	name: string;
+	data: string;
+}
+
 export function createNewStream(streamName: string): void {
 	ipcRenderer.send('Logger.createNewStream', streamName);
 }
@@ -20,7 +25,7 @@ export function writeToStream(
 		outdata = JSON.stringify(data, null, '\t');
 	}
 
-	ipcRenderer.send('Logger.writeToStream', outdata);
+	ipcRenderer.send('Logger.writeToStream', streamName, outdata);
 }
 
 export function openLogger(): void {

@@ -1,0 +1,21 @@
+* {
+	outline: none;
+	border: none;
+}
+
+textarea {
+	background: #222;
+	color: #fff;
+	position: fixed;
+	top: 0;
+	left: 150px;
+	width: calc(100% - 150px);
+	height: 100%;
+}
+
+select {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 150px;
+}
