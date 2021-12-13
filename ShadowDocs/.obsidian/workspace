@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Deno.md",
+            "file": "Logger.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Deno.md",
+                "file": "Logger.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,9 +88,9 @@
   },
   "active": "b81e608fe000bfe3",
   "lastOpenFiles": [
-    "Deno.md",
+    "Logger.md",
     "Plugins.md",
-    "SDDR.md",
-    "Logger.md"
+    "Deno.md",
+    "SDDR.md"
   ]
 }
