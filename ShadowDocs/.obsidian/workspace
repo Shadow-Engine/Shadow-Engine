@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Deno.md",
+            "file": "Plugin Communication Protocol.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Deno.md",
+                "file": "Plugin Communication Protocol.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,9 +88,10 @@
   },
   "active": "b81e608fe000bfe3",
   "lastOpenFiles": [
-    "Deno.md",
+    "Plugin Communication Protocol.md",
     "Plugins.md",
+    "Logger.md",
     "SDDR.md",
-    "Logger.md"
+    "Deno.md"
   ]
 }
