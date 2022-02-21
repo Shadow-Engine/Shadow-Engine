@@ -38,6 +38,7 @@ export function startPluginHost() {
 
 		MAINloggerCreateNewStream('plugins');
 		MAINloggerWriteToStream('plugins', 'Starting PluginHost on port ' + port);
+		MAINloggerWriteToStream('plugins', 'Waiting for plugins to connect');
 
 		const wss = new Server({ port: port });
 
@@ -46,6 +47,11 @@ export function startPluginHost() {
 			ws.id = v4();
 			ws.authenticated = false;
 			if (parameters.query.token == authtoken) ws.authenticated = true;
+			if (ws.authenticated)
+				MAINloggerWriteToStream(
+					'plugins',
+					'Connection authenticated, plugin can be trusted'
+				);
 		});
 
 		startPlugins(port);
@@ -72,12 +78,14 @@ function startPlugins(port: number) {
 
 		exec(
 			`deno run --allow-net=localhost:${port} ${sddr}/plugins/${validPlugins[i]}/${pluginData.launchscript} ${port} ${authtoken}`,
+			{ env: { NO_COLOR: '' } },
 			(error, stdout, stderr) => {
 				if (error)
 					MAINloggerWriteToStream('plugins', 'Plugin exec error: ' + error);
 				if (stderr)
 					MAINloggerWriteToStream('plugins', 'Plugin error: ' + stderr); // Change errors to show as a notification in the future
-				if (stdout) MAINloggerWriteToStream('plugins', stdout);
+				if (stdout)
+					MAINloggerWriteToStream('plugin ' + validPlugins[i], stdout);
 			}
 		);
 	}
