@@ -8,12 +8,12 @@ import { existsSync, readdirSync, readFileSync } from 'original-fs';
 import { getPort } from 'portfinder';
 import { Server } from 'ws';
 import * as colors from 'colors';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import * as URLParse from 'url-parse';
 import { MAINloggerCreateNewStream, MAINloggerWriteToStream } from '../main';
 
 interface pluginSocket extends WebSocket {
-	id: string;
+	runtimeToken: string;
 	authenticated: boolean;
 }
 
@@ -30,7 +30,16 @@ interface Plugin {
 	allowedDomains: string[];
 }
 
+interface runtimePlugin extends Plugin {
+	runtimeToken: string;
+}
+
 let authtoken: string = v4();
+
+//Table of plugin attributes loaded just before a plugin is started,
+//each plugin in the table contains info like the runtimeToken, used
+//to securly identify a plugin, and the plugin info like permissions
+let runtimeTokenTable: runtimePlugin[];
 
 export function startPluginHost() {
 	getPort(function (err, port) {
@@ -44,13 +53,13 @@ export function startPluginHost() {
 
 		wss.on('connection', function connection(ws: pluginSocket, req) {
 			const parameters = URLParse(req.url, true);
-			ws.id = v4();
+			ws.runtimeToken = parameters.query.runtimeToken;
 			ws.authenticated = false;
 			if (parameters.query.token == authtoken) ws.authenticated = true;
 			if (ws.authenticated)
 				MAINloggerWriteToStream(
 					'plugins',
-					'Connection authenticated, plugin can be trusted'
+					`plugin with token: ${ws.runtimeToken} authenticated`
 				);
 		});
 
@@ -71,23 +80,78 @@ function startPlugins(port: number) {
 	);
 
 	for (let i = 0; i < validPlugins.length; i++) {
+		//Generated runtime token used to identify the plugin internally
+		let runtimeToken: string = v4();
+
 		MAINloggerCreateNewStream('plugin ' + validPlugins[i]);
 		let pluginData: Plugin = JSON.parse(
 			readFileSync(`${sddr}/plugins/${validPlugins[i]}/plugin.json`, 'utf-8')
 		);
 
-		exec(
-			`deno run --allow-net=localhost:${port} ${sddr}/plugins/${validPlugins[i]}/${pluginData.launchscript} ${port} ${authtoken}`,
-			{ env: { NO_COLOR: '' } },
-			(error, stdout, stderr) => {
-				if (error)
-					MAINloggerWriteToStream('plugins', 'Plugin exec error: ' + error);
-				if (stderr)
-					MAINloggerWriteToStream('plugins', 'Plugin error: ' + stderr); // Change errors to show as a notification in the future
-				if (stdout)
-					MAINloggerWriteToStream('plugin ' + validPlugins[i], stdout);
-			}
+		// exec(
+		// 	`deno run --allow-net=localhost:${port} ${sddr}/plugins/${validPlugins[i]}/${pluginData.launchscript} ${port} ${authtoken}`,
+		// 	{ env: { NO_COLOR: '' } },
+		// 	(error, stdout, stderr) => {
+		// 		if (error)
+		// 			MAINloggerWriteToStream('plugins', 'Plugin exec error: ' + error);
+		// 		if (stderr)
+		// 			MAINloggerWriteToStream('plugins', 'Plugin error: ' + stderr); // Change errors to show as a notification in the future
+		// 		if (stdout)
+		// 			MAINloggerWriteToStream('plugin ' + validPlugins[i], stdout);
+		// 	}
+		// );
+
+		let currentPluginProcess = spawn(
+			'deno',
+			[
+				'run',
+				`--allow-net=localhost:${port}`,
+				`${sddr}/plugins/${validPlugins[i]}/${pluginData.launchscript}`,
+				port.toString(),
+				authtoken,
+				runtimeToken
+			],
+			{ env: { NO_COLOR: '' } }
 		);
+
+		//Add runtimePlugin entry to the runtimeTokenTable
+		runtimeTokenTable.push({
+			id: pluginData.id,
+			pretty: pluginData.pretty,
+			version: pluginData.version,
+			copyright: pluginData.copyright,
+			author: pluginData.author,
+			launchscript: pluginData.launchscript,
+			permissions: pluginData.permissions,
+			allowedReadPaths: pluginData.allowedReadPaths,
+			allowedWritePaths: pluginData.allowedWritePaths,
+			allowedDomains: pluginData.allowedDomains,
+			runtimeToken: runtimeToken
+		});
+
+		// Setup IO handlers for process
+
+		currentPluginProcess.stdout.on('data', (data) => {
+			MAINloggerWriteToStream('plugin ' + validPlugins[i], data);
+		});
+
+		currentPluginProcess.stderr.on('data', (data) => {
+			MAINloggerWriteToStream(
+				'plugins',
+				`PLUGIN INTERNAL ERROR (${validPlugins[i]}): ${data}`
+			);
+		});
+
+		currentPluginProcess.on('close', (code) => {
+			MAINloggerWriteToStream(
+				'plugin ' + validPlugins[i],
+				'Plugin process exited with code: ' + code
+			);
+			MAINloggerWriteToStream(
+				'plugins',
+				'Plugin process exited with code: ' + code
+			);
+		});
 	}
 }
 

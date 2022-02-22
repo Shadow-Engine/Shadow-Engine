@@ -371,7 +371,8 @@ export function MAINopenLogger() {
 		height: 450,
 		width: 800,
 		url: '../dom/Logger/Logger.html',
-		windowTitle: 'Logger'
+		windowTitle: 'Logger',
+		onTop: true
 	});
 	loggerWindow.getBrowserView().webContents.on('did-finish-load', updateLogger);
 }
