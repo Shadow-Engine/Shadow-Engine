@@ -9,8 +9,9 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Plugin Communication Protocol.md",
-            "mode": "source"
+            "file": "Dependencies/Miniaudio.md",
+            "mode": "source",
+            "source": false
           }
         }
       }
@@ -68,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Plugin Communication Protocol.md",
+                "file": "Dependencies/Miniaudio.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,10 +89,15 @@
   },
   "active": "b81e608fe000bfe3",
   "lastOpenFiles": [
-    "Plugin Communication Protocol.md",
-    "Plugins.md",
-    "Logger.md",
-    "SDDR.md",
-    "Deno.md"
+    "Dependencies/Miniaudio.md",
+    "Dependencies/OpenVR.md",
+    "Dependencies/JSON for Modern C++.md",
+    "Dependencies/ImGui Node Editor.md",
+    "Dependencies/Dear ImGui.md",
+    "Dependencies/BIMG.md",
+    "Dependencies/BX.md",
+    "Dependencies/BGFX.md",
+    "Dependencies/About Deps.md",
+    "Audio/Audio Spatialization.md"
   ]
 }
